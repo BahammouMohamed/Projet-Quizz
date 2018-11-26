@@ -3,7 +3,7 @@ import java.io.Serializable;
 public class User implements Serializable{
 	
 	
-	
+	private Long TESTGIT;
 	private Long id_user;
 	private String nom_user;
 	private String prenom_user;
