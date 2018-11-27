@@ -1,3 +1,4 @@
+package projet.entities;
 
 
 import org.springframework.boot.SpringApplication;

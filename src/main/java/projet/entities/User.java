@@ -1,9 +1,14 @@
+package projet.entities;
 import java.io.Serializable;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public class User implements Serializable{
 	
-	
-	private Long TESTGIT;
+	@Id @GeneratedValue
 	private Long id_user;
 	private String nom_user;
 	private String prenom_user;
