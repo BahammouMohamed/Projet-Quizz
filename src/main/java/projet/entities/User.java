@@ -15,14 +15,12 @@ public class User implements Serializable{
 	private String nom_user;
 	@Column(length=50)
 	private String prenom_user;
-	@Column(length=70)
+	@Column(length=100)
 	private String email_user;
 	@Column(length=50)
 	private String pseudo_user;
 	@Column(length=50)
 	private String password_user;
-	
-	
 	
 	
 	public User() {
