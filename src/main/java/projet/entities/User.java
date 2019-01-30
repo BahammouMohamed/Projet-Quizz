@@ -1,6 +1,7 @@
 package projet.entities;
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -10,10 +11,15 @@ public class User implements Serializable{
 	
 	@Id @GeneratedValue
 	private Long id_user;
+	@Column(length=50)
 	private String nom_user;
+	@Column(length=50)
 	private String prenom_user;
+	@Column(length=70)
 	private String email_user;
+	@Column(length=50)
 	private String pseudo_user;
+	@Column(length=50)
 	private String password_user;
 	
 	
@@ -66,6 +72,12 @@ public class User implements Serializable{
 	public void setPassword_user(String password_user) {
 		this.password_user = password_user;
 	}
+	@Override
+	public String toString() {
+		return "User [id_user=" + id_user + ", nom_user=" + nom_user + ", prenom_user=" + prenom_user + ", email_user="
+				+ email_user + ", pseudo_user=" + pseudo_user + ", password_user=" + password_user + "]";
+	}
+	
 	
 
 }
