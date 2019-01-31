@@ -170,7 +170,7 @@ public class ProjetApplication {
 		ReponseEleve repE3_9 = new ReponseEleve("reponse eleve 3 question 9 ", user3, question9);
 		
 		repEleveDao.save(repE1_1);
-		repEleveDao.save(repE1_2);
+		repEleveDao.save(repE1_2); 
 		repEleveDao.save(repE1_3);
 		repEleveDao.save(repE2_4);
 		repEleveDao.save(repE2_5);
