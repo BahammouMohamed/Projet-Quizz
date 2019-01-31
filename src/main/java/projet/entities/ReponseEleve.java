@@ -1,11 +1,18 @@
 package projet.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -17,14 +24,29 @@ public class ReponseEleve implements Serializable{
 	@Column
 	private String reponse_eleve;
 	
+	@ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_user", nullable = false)
+    private User user;
 	
-	/**
-	 * Ici mapper les clés etranger id_user et id_question
-	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_question", nullable = false)
+    private Question question;
+	
+	
 	public ReponseEleve(String reponse_eleve) {
 		super();
 		this.reponse_eleve = reponse_eleve;
 	}
+	
+	
+
+	public ReponseEleve(String reponse_eleve, User user, Question question) {
+		super();
+		this.reponse_eleve = reponse_eleve;
+		this.user = user;
+		this.question = question;
+	}
+
 
 
 	public ReponseEleve() {
@@ -47,6 +69,26 @@ public class ReponseEleve implements Serializable{
 
 	public void setReponse_eleve(String reponse_eleve) {
 		this.reponse_eleve = reponse_eleve;
+	}
+
+
+	public User getUser() {
+		return user;
+	}
+
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+
+	public Question getQuestion() {
+		return question;
+	}
+
+
+	public void setQuestion(Question question) {
+		this.question = question;
 	}
 	
 	

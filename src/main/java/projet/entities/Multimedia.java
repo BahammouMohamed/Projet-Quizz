@@ -5,8 +5,11 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -22,11 +25,11 @@ public class Multimedia implements Serializable{
 	@Column(length=50)
 	private String type_media; //sons,video,img...
 	
+	@ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_question", nullable = false)
+    private Question question;
 	
 	
-	/**
-	 * Ici mapper les clés etrangere id_user et id_question
-	 */
 	
 	public Multimedia() {
 		super();
@@ -38,6 +41,18 @@ public class Multimedia implements Serializable{
 		this.date_creation_media = date_creation_media;
 		this.type_media = type_media;
 	}
+	
+	
+
+	public Multimedia(String path_media, Date date_creation_media, String type_media, Question question) {
+		super();
+		this.path_media = path_media;
+		this.date_creation_media = date_creation_media;
+		this.type_media = type_media;
+		this.question = question;
+	}
+	
+	
 
 	public Long getId_media() {
 		return id_media;
@@ -70,6 +85,16 @@ public class Multimedia implements Serializable{
 	public void setType_media(String type_media) {
 		this.type_media = type_media;
 	}
+
+	public Question getQuestion() {
+		return question;
+	}
+
+	public void setQuestion(Question question) {
+		this.question = question;
+	}
+
+	
 	
 	
 

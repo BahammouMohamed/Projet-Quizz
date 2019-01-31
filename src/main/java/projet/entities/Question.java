@@ -2,7 +2,10 @@ package projet.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -26,13 +30,23 @@ public class Question implements Serializable{
 	private String type;
 	@Column
 	private Integer points;
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_quizz", nullable = false)
     private Quizz quizz;
 	
-	/**
-	 * Ici mapper la clé etranger id_question
-	 */
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "question")
+    private Set<Indice> indices =  new HashSet<Indice>();
+	
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "question")
+    private Set<Multimedia> medias =  new HashSet<Multimedia>();
+	
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "question")
+    private Set<Reponse> reponses =  new HashSet<Reponse>();
+	
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "question")
+    private Set<ReponseEleve> reponsesEleve =  new HashSet<ReponseEleve>();
+	
+	
 	
 	
 	public Question(Date date_creation_question, String question, String type, Integer points) {
@@ -143,6 +157,54 @@ public class Question implements Serializable{
 
 	public void setQuizz(Quizz quizz) {
 		this.quizz = quizz;
+	}
+
+
+
+	public Set<Indice> getIndices() {
+		return indices;
+	}
+
+
+
+	public void setIndices(Set<Indice> indices) {
+		this.indices = indices;
+	}
+
+
+
+	public Set<Multimedia> getMedias() {
+		return medias;
+	}
+
+
+
+	public void setMedias(Set<Multimedia> medias) {
+		this.medias = medias;
+	}
+
+
+
+	public Set<Reponse> getReponses() {
+		return reponses;
+	}
+
+
+
+	public void setReponses(Set<Reponse> reponses) {
+		this.reponses = reponses;
+	}
+
+
+
+	public Set<ReponseEleve> getReponsesEleve() {
+		return reponsesEleve;
+	}
+
+
+
+	public void setReponsesEleve(Set<ReponseEleve> reponsesEleve) {
+		this.reponsesEleve = reponsesEleve;
 	}
 	
 	

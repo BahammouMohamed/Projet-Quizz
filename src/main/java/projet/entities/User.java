@@ -1,10 +1,15 @@
 package projet.entities;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -23,6 +28,18 @@ public class User implements Serializable{
 	private String pseudo_user;
 	@Column(length=50)
 	private String password_user;
+	
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "user")
+    private Set<Quizz> quizzs =  new HashSet<Quizz>();
+	
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "user")
+    private Set<ReponseEleve> reponses =  new HashSet<ReponseEleve>();
+	
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "user")
+    private Set<Score> scores =  new HashSet<Score>();
+	
+	
+	
 	
 	
 	public User() {
@@ -72,10 +89,23 @@ public class User implements Serializable{
 	public void setPassword_user(String password_user) {
 		this.password_user = password_user;
 	}
-	@Override
-	public String toString() {
-		return "User [id_user=" + id_user + ", nom_user=" + nom_user + ", prenom_user=" + prenom_user + ", email_user="
-				+ email_user + ", pseudo_user=" + pseudo_user + ", password_user=" + password_user + "]";
+	public Set<Quizz> getQuizzs() {
+		return quizzs;
+	}
+	public void setQuizzs(Set<Quizz> quizzs) {
+		this.quizzs = quizzs;
+	}
+	public Set<ReponseEleve> getReponses() {
+		return reponses;
+	}
+	public void setReponses(Set<ReponseEleve> reponses) {
+		this.reponses = reponses;
+	}
+	public Set<Score> getScores() {
+		return scores;
+	}
+	public void setScores(Set<Score> scores) {
+		this.scores = scores;
 	}
 	
 	

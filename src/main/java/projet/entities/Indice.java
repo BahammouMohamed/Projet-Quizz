@@ -5,8 +5,11 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -19,9 +22,12 @@ public class Indice implements Serializable{
 	@Column
 	private Date date_creation_indice;
 	
-	/**
-	 * Ici mapper les clés etrangers id_question et id_user
-	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_question", nullable = false)
+    private Question question;
+	
+	
+	
 	
 	public Indice(String indice, Date date_creation_indice) {
 		super();
@@ -31,6 +37,16 @@ public class Indice implements Serializable{
 
 	public Indice() {
 		super();
+	}
+	
+
+	
+
+	public Indice(String indice, Date date_creation_indice, Question question) {
+		super();
+		this.indice = indice;
+		this.date_creation_indice = date_creation_indice;
+		this.question = question;
 	}
 
 	public Long getId_indice() {
@@ -56,6 +72,16 @@ public class Indice implements Serializable{
 	public void setDate_creation_indice(Date date_creation_indice) {
 		this.date_creation_indice = date_creation_indice;
 	}
+
+	public Question getQuestion() {
+		return question;
+	}
+
+	public void setQuestion(Question question) {
+		this.question = question;
+	}
+
+	
 	
 	
 	

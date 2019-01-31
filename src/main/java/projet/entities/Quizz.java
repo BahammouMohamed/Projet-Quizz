@@ -4,12 +4,17 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -27,13 +32,14 @@ public class Quizz  implements Serializable{
 	private String periode;
 	@Column
 	private Date date_creation_quizz;
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "quizz")
-    private Collection<Question> questions;
 	
-	/**
-	 * 
-	 * Ici mapper la clé id_user
-	 */
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "quizz")
+    private Set<Question> questions =  new HashSet<Question>();
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_user", nullable = false)
+    private User user;
+	
 	
 	
 	public Quizz(String niveau, String matiere, String periode, Date date_creation_quizz) {
@@ -45,6 +51,20 @@ public class Quizz  implements Serializable{
 	}
 	
 	
+	
+	
+	public Quizz(String niveau, String matiere, String periode, Date date_creation_quizz, User user) {
+		super();
+		this.niveau = niveau;
+		this.matiere = matiere;
+		this.periode = periode;
+		this.date_creation_quizz = date_creation_quizz;
+		this.user = user;
+	}
+
+
+
+
 	public Quizz() {
 		super();
 	}
@@ -82,14 +102,32 @@ public class Quizz  implements Serializable{
 	}
 
 
-	public Collection<Question> getQuestions() {
+	public Set<Question> getQuestions() {
 		return  questions;
 	}
 
 
-	public void setQuestions(Collection<Question> questions) {
+	public void setQuestions(Set<Question> questions) {
 		this.questions = questions;
 	}
+
+
+
+
+	public User getUser() {
+		return user;
+	}
+
+
+
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+
+	
+	
 	
 	
 	
