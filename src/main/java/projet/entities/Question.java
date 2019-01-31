@@ -5,10 +5,15 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="questions")
 public class Question implements Serializable{
 
 	@Id @GeneratedValue
@@ -21,6 +26,9 @@ public class Question implements Serializable{
 	private String type;
 	@Column
 	private Integer points;
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_quizz", nullable = false)
+    private Quizz quizz;
 	
 	/**
 	 * Ici mapper la clé etranger id_question
@@ -33,6 +41,17 @@ public class Question implements Serializable{
 		this.question = question;
 		this.type = type;
 		this.points = points;
+	}
+
+
+
+	public Question(Date date_creation_question, String question, String type, Integer points, Quizz quizz) {
+		super();
+		this.date_creation_question = date_creation_question;
+		this.question = question;
+		this.type = type;
+		this.points = points;
+		this.quizz = quizz;
 	}
 
 
@@ -112,6 +131,18 @@ public class Question implements Serializable{
 
 	public void setPoints(Integer points) {
 		this.points = points;
+	}
+
+
+
+	public Quizz getQuizz() {
+		return quizz;
+	}
+
+
+
+	public void setQuizz(Quizz quizz) {
+		this.quizz = quizz;
 	}
 	
 	

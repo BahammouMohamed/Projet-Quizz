@@ -5,10 +5,14 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="indices")
 public class Indice implements Serializable{
-	@Column
+	@Id @GeneratedValue
 	private Long id_indice;
 	@Column
 	private String indice;

@@ -1,14 +1,20 @@
 package projet.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="quizzs")
 public class Quizz  implements Serializable{
 
 	@Id @GeneratedValue
@@ -21,6 +27,8 @@ public class Quizz  implements Serializable{
 	private String periode;
 	@Column
 	private Date date_creation_quizz;
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "quizz")
+    private Collection<Question> questions;
 	
 	/**
 	 * 
@@ -71,6 +79,16 @@ public class Quizz  implements Serializable{
 	}
 	public void setDate_creation_quizz(Date date_creation_quizz) {
 		this.date_creation_quizz = date_creation_quizz;
+	}
+
+
+	public Collection<Question> getQuestions() {
+		return  questions;
+	}
+
+
+	public void setQuestions(Collection<Question> questions) {
+		this.questions = questions;
 	}
 	
 	
