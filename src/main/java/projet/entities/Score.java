@@ -25,7 +25,7 @@ public class Score implements Serializable{
     @JoinColumn(name = "id_user", nullable = false)
     private User user;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER) 
     @JoinColumn(name = "id_quizz", nullable = false)
     private Quizz quizz;
 	
