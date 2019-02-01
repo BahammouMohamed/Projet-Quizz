@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -21,18 +23,28 @@ import org.springframework.context.ApplicationContext;
 
 
 @SpringBootApplication
-public class ProjetApplication {
-
+public class ProjetApplication implements CommandLineRunner{
+	@Autowired
+	private UserRepository userDao ;
+	@Autowired
+	private QuestionRepository questionDao ;
+	@Autowired
+	private QuizzRepository quizzDao ;
+	@Autowired
+	private IndiceRepository indiceDao ;
+	@Autowired
+	private ReponseEleveRepository repEleveDao ;
+	@Autowired
+	private ReponseRepository repDao ;
+	
+	
 	public static void main(String[] args) {
-		ApplicationContext ctx = SpringApplication.run(ProjetApplication.class, args);
-		UserRepository userDao = ctx.getBean(UserRepository.class);
-		QuestionRepository questionDao = ctx.getBean(QuestionRepository.class);
-		QuizzRepository quizzDao = ctx.getBean(QuizzRepository.class);
-		IndiceRepository indiceDao = ctx.getBean(IndiceRepository.class);
-		ReponseEleveRepository repEleveDao = ctx.getBean(ReponseEleveRepository.class);
-		ReponseRepository repDao = ctx.getBean(ReponseRepository.class);
-		
+		SpringApplication.run(ProjetApplication.class, args);
+			
+	}
 
+	@Override
+	public void run(String... args) throws Exception {
 		User user1 = new User("bahammou","mohamed","mohamed@gmail.com","mohamed123","mohamed123");
 		User user2 = new User("alla","reda","reda@gmail.com","reda123","reda123");
 		User user3 = new User("belghazi","zouhair","zouhair@gmail.com","zouhair123","zouhair123");
@@ -211,6 +223,7 @@ public class ProjetApplication {
 			System.out.println("\t ########"+q.getMatiere() );
 		}
 		System.out.println("############################################################");
+		
 		
 	}
 }
