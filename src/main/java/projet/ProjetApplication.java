@@ -45,17 +45,21 @@ public class ProjetApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		User user1 = new User("bahammou","mohamed","mohamed@gmail.com","mohamed123","mohamed123");
-		User user2 = new User("alla","reda","reda@gmail.com","reda123","reda123");
-		User user3 = new User("belghazi","zouhair","zouhair@gmail.com","zouhair123","zouhair123");
+		User user1 = new User("flauzac","olivier","olivier@gmail.com","olivier","olivier","enseignant");
+		User user2 = new User("stefennel","angello","angello@gmail.com","angello","angello","enseignant");
+		User user3 = new User("bernard","thibaud","thibaud@gmail.com","thibaud","thibaud","enseignant");
 		
+		User eleve1 = new User("bahammou","mohamed","mohamed@gmail.com","mohamed123","mohamed123","eleve");
+		User eleve2 = new User("alla","reda","reda@gmail.com","reda","reda","eleve");
+		User eleve3 = new User("belghazi","zouhair","zouhair@gmail.com","zouhair","zouhair","eleve");
 		
 		userDao.save(user1);
 		userDao.save(user2);
 		userDao.save(user3);
-		user2.setNom_user("alla2");
-		user2.setPrenom_user("reda2");
-		userDao.save(user2);
+		userDao.save(eleve1);
+		userDao.save(eleve2);
+		userDao.save(eleve3);
+		
 		
 				
 		Quizz quizz1 = new Quizz("bac", "math", "seance 1", new Date(),user1);
@@ -101,7 +105,7 @@ public class ProjetApplication implements CommandLineRunner{
 		Indice indice1_8 = new Indice("indice 1 question 8", new Date(),question8 );
 		Indice indice1_9 = new Indice("indice 1 question 9", new Date(),question9 );
 		
-		
+		Question question10 = new Question(new Date(), "question 10", "media10", 5,quizz4);
 				
 		questionDao.save(question1);
 		questionDao.save(question2);
@@ -112,6 +116,7 @@ public class ProjetApplication implements CommandLineRunner{
 		questionDao.save(question7);
 		questionDao.save(question8);
 		questionDao.save(question9);
+		questionDao.save(question10);
 		
 		
 		indiceDao.save(indice1_1);
@@ -169,17 +174,17 @@ public class ProjetApplication implements CommandLineRunner{
 		
 		
 		
-		ReponseEleve repE1_1 = new ReponseEleve("reponse eleve 1 question 1 ", user1, question1);
-		ReponseEleve repE1_2 = new ReponseEleve("reponse eleve 1 question  2", user1, question2);
-		ReponseEleve repE1_3 = new ReponseEleve("reponse eleve 1 question  3", user1, question3);
+		ReponseEleve repE1_1 = new ReponseEleve("reponse eleve 1 question 1 ", eleve1, question1);
+		ReponseEleve repE1_2 = new ReponseEleve("reponse eleve 1 question  2", eleve1, question2);
+		ReponseEleve repE1_3 = new ReponseEleve("reponse eleve 1 question  3", eleve1, question3);
 		
-		ReponseEleve repE2_4 = new ReponseEleve("reponse eleve 2 question 4 ", user2, question4);
-		ReponseEleve repE2_5 = new ReponseEleve("reponse eleve 2 question  5", user2, question5);
-		ReponseEleve repE2_6 = new ReponseEleve("reponse eleve 2 question  6", user2, question6);
+		ReponseEleve repE2_4 = new ReponseEleve("reponse eleve 2 question 4 ", eleve2, question4);
+		ReponseEleve repE2_5 = new ReponseEleve("reponse eleve 2 question  5", eleve2, question5);
+		ReponseEleve repE2_6 = new ReponseEleve("reponse eleve 2 question  6", eleve2, question6);
 		
-		ReponseEleve repE3_7 = new ReponseEleve("reponse eleve 3 question 7 ", user3, question7);
-		ReponseEleve repE3_8 = new ReponseEleve("reponse eleve 3 question 8 ", user3, question8);
-		ReponseEleve repE3_9 = new ReponseEleve("reponse eleve 3 question 9 ", user3, question9);
+		ReponseEleve repE3_7 = new ReponseEleve("reponse eleve 3 question 7 ", eleve3, question7);
+		ReponseEleve repE3_8 = new ReponseEleve("reponse eleve 3 question 8 ", eleve3, question8);
+		ReponseEleve repE3_9 = new ReponseEleve("reponse eleve 3 question 9 ", eleve3, question9);
 		
 		repEleveDao.save(repE1_1);
 		repEleveDao.save(repE1_2); 
@@ -191,7 +196,7 @@ public class ProjetApplication implements CommandLineRunner{
 		repEleveDao.save(repE3_8);
 		repEleveDao.save(repE3_9);
 		
-		
+		/*
 		List<Quizz> quizzs = quizzDao.findAll();
 		for(Quizz qz:quizzs) {
 			Set<Question> questions = qz.getQuestions();
@@ -223,6 +228,9 @@ public class ProjetApplication implements CommandLineRunner{
 			System.out.println("\t ########"+q.getMatiere() );
 		}
 		System.out.println("############################################################");
+		*/
+		List<User> users = userDao.findAll();
+		users.forEach(u->System.out.println(u.getId_user()));
 		
 		
 	}

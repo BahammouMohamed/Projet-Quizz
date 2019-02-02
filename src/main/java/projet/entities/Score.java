@@ -11,10 +11,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name="scores")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_score")
 public class Score implements Serializable{
 	
 	@Id @GeneratedValue
@@ -25,12 +31,11 @@ public class Score implements Serializable{
 	
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_user", nullable = false)
-	@JsonManagedReference
 	private User user;
 	
 	@ManyToOne(fetch = FetchType.EAGER) 
     @JoinColumn(name = "id_quizz", nullable = false)
-	@JsonManagedReference
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Quizz quizz;
 	
 	

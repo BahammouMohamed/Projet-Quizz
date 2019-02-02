@@ -18,10 +18,18 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name="quizzs")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_quizz")
 public class Quizz  implements Serializable{
 
 	@Id @GeneratedValue
@@ -35,12 +43,14 @@ public class Quizz  implements Serializable{
 	@Column
 	private Date date_creation_quizz;
 	
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "quizz")
-	@JsonBackReference
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "quizz", orphanRemoval = true)
+	@JsonIgnore
+	@OnDelete(action = OnDeleteAction.CASCADE) 
 	private Set<Question> questions =  new HashSet<Question>();
 	
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_user", nullable = false)
+	 @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 	
 	

@@ -12,11 +12,16 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name="users")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_user")
 public class User implements Serializable{
 	
 	@Id @GeneratedValue
@@ -31,17 +36,22 @@ public class User implements Serializable{
 	private String pseudo_user;
 	@Column(length=50)
 	private String password_user;
+	@Column(length=25)
+	private String status;
 	
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "user")
-	@JsonBackReference
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "user", orphanRemoval = true)
+	@JsonIgnore
+	@OnDelete(action = OnDeleteAction.CASCADE) 
 	private Set<Quizz> quizzs =  new HashSet<Quizz>();
 	
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "user")
-	@JsonBackReference
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "user" , orphanRemoval = true)
+	@JsonIgnore
+	@OnDelete(action = OnDeleteAction.CASCADE) 
 	private Set<ReponseEleve> reponses =  new HashSet<ReponseEleve>();
 	
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "user")
-	@JsonBackReference
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "user", orphanRemoval = true)
+	@JsonIgnore
+	@OnDelete(action = OnDeleteAction.CASCADE) 
 	private Set<Score> scores =  new HashSet<Score>();
 	
 	
@@ -51,14 +61,18 @@ public class User implements Serializable{
 	public User() {
 		super();
 	}
-	public User(String nom_user, String prenom_user, String email_user, String pseudo_user, String password_user) {
+	
+	public User(String nom_user, String prenom_user, String email_user, String pseudo_user, String password_user,
+			String status) {
 		super();
 		this.nom_user = nom_user;
 		this.prenom_user = prenom_user;
 		this.email_user = email_user;
 		this.pseudo_user = pseudo_user;
 		this.password_user = password_user;
+		this.status = status;
 	}
+
 	public Long getId_user() {
 		return id_user;
 	}
@@ -112,6 +126,12 @@ public class User implements Serializable{
 	}
 	public void setScores(Set<Score> scores) {
 		this.scores = scores;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 	

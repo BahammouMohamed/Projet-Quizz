@@ -16,11 +16,18 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name="questions")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_question")
 public class Question implements Serializable{
 
 	@Id @GeneratedValue
@@ -35,23 +42,27 @@ public class Question implements Serializable{
 	private Integer points;
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_quizz", nullable = false)
-	@JsonManagedReference
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Quizz quizz;
 	
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "question")
-	@JsonBackReference
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "question", orphanRemoval = true)
+	@JsonIgnore
+	@OnDelete(action = OnDeleteAction.CASCADE) 
 	private Set<Indice> indices =  new HashSet<Indice>();
 	
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "question")
-	@JsonBackReference
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "question", orphanRemoval = true)
+	@JsonIgnore
+	@OnDelete(action = OnDeleteAction.CASCADE) 
 	private Set<Multimedia> medias =  new HashSet<Multimedia>();
 	
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "question")
-	@JsonBackReference
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "question", orphanRemoval = true)
+	@JsonIgnore
+	@OnDelete(action = OnDeleteAction.CASCADE) 
 	private Set<Reponse> reponses =  new HashSet<Reponse>();
 	
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "question")
-	@JsonBackReference
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "question", orphanRemoval = true)
+	@JsonIgnore
+	@OnDelete(action = OnDeleteAction.CASCADE) 
 	private Set<ReponseEleve> reponsesEleve =  new HashSet<ReponseEleve>();
 	
 	

@@ -5,14 +5,14 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import projet.exceptions.ResourceNotFoundException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
 import projet.dao.UserRepository;
 import projet.entities.Quizz;
+import projet.entities.ReponseEleve;
+import projet.entities.Score;
 import projet.entities.User;
 
 
@@ -55,6 +55,7 @@ public class UserService {
 			user.setPseudo_user(userRequest.getPseudo_user());
 			user.setPassword_user(userRequest.getPassword_user());
 			user.setEmail_user(userRequest.getEmail_user());
+			user.setStatus(userRequest.getStatus());
 	        return userRepository.save(user);
 	    }).orElseThrow(() -> new ResourceNotFoundException("UserID " + id + " not found"));
 
@@ -63,6 +64,16 @@ public class UserService {
 	@RequestMapping(value="/users/{id}/quizzs",method=RequestMethod.GET)
     public Set<Quizz> getQuizzs(@PathVariable Long id) {
         return userRepository.findById(id).get().getQuizzs();
+    }
+	
+	@RequestMapping(value="/users/{id}/reponseseleve",method=RequestMethod.GET)
+    public Set<ReponseEleve> getReponsesEleve(@PathVariable Long id) {
+        return userRepository.findById(id).get().getReponses();
+    }
+	
+	@RequestMapping(value="/users/{id}/scores",method=RequestMethod.GET)
+    public Set<Score> getScores(@PathVariable Long id) {
+        return userRepository.findById(id).get().getScores();
     }
 	
 }
