@@ -16,6 +16,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name="questions")
 public class Question implements Serializable{
@@ -32,19 +35,24 @@ public class Question implements Serializable{
 	private Integer points;
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_quizz", nullable = false)
-    private Quizz quizz;
+	@JsonManagedReference
+	private Quizz quizz;
 	
 	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "question")
-    private Set<Indice> indices =  new HashSet<Indice>();
+	@JsonBackReference
+	private Set<Indice> indices =  new HashSet<Indice>();
 	
 	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "question")
-    private Set<Multimedia> medias =  new HashSet<Multimedia>();
+	@JsonBackReference
+	private Set<Multimedia> medias =  new HashSet<Multimedia>();
 	
 	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "question")
-    private Set<Reponse> reponses =  new HashSet<Reponse>();
+	@JsonBackReference
+	private Set<Reponse> reponses =  new HashSet<Reponse>();
 	
 	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "question")
-    private Set<ReponseEleve> reponsesEleve =  new HashSet<ReponseEleve>();
+	@JsonBackReference
+	private Set<ReponseEleve> reponsesEleve =  new HashSet<ReponseEleve>();
 	
 	
 	

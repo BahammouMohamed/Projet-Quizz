@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -32,15 +33,15 @@ public class User implements Serializable{
 	private String password_user;
 	
 	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "user")
-	@JsonIgnore
+	@JsonBackReference
 	private Set<Quizz> quizzs =  new HashSet<Quizz>();
 	
 	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "user")
-	@JsonIgnore
+	@JsonBackReference
 	private Set<ReponseEleve> reponses =  new HashSet<ReponseEleve>();
 	
 	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "user")
-	@JsonIgnore
+	@JsonBackReference
 	private Set<Score> scores =  new HashSet<Score>();
 	
 	

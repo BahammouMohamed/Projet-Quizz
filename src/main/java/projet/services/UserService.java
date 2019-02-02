@@ -1,6 +1,7 @@
 package projet.services;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import projet.exceptions.ResourceNotFoundException;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import projet.dao.UserRepository;
+import projet.entities.Quizz;
 import projet.entities.User;
 
 
@@ -56,6 +58,11 @@ public class UserService {
 	        return userRepository.save(user);
 	    }).orElseThrow(() -> new ResourceNotFoundException("UserID " + id + " not found"));
 
+    }
+	
+	@RequestMapping(value="/users/{id}/quizzs",method=RequestMethod.GET)
+    public Set<Quizz> getQuizzs(@PathVariable Long id) {
+        return userRepository.findById(id).get().getQuizzs();
     }
 	
 }

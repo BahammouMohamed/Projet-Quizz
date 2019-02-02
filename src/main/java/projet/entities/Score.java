@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name="scores")
 public class Score implements Serializable{
@@ -23,11 +25,13 @@ public class Score implements Serializable{
 	
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_user", nullable = false)
-    private User user;
+	@JsonManagedReference
+	private User user;
 	
 	@ManyToOne(fetch = FetchType.EAGER) 
     @JoinColumn(name = "id_quizz", nullable = false)
-    private Quizz quizz;
+	@JsonManagedReference
+	private Quizz quizz;
 	
 	
 	public Score() {

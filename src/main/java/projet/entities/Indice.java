@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name="indices")
 public class Indice implements Serializable{
@@ -24,7 +26,8 @@ public class Indice implements Serializable{
 	
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_question", nullable = false)
-    private Question question;
+	@JsonManagedReference
+	private Question question;
 	
 	
 	

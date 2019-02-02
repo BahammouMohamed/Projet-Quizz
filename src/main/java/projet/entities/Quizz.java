@@ -18,6 +18,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name="quizzs")
 public class Quizz  implements Serializable{
@@ -34,7 +36,8 @@ public class Quizz  implements Serializable{
 	private Date date_creation_quizz;
 	
 	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "quizz")
-    private Set<Question> questions =  new HashSet<Question>();
+	@JsonBackReference
+	private Set<Question> questions =  new HashSet<Question>();
 	
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_user", nullable = false)

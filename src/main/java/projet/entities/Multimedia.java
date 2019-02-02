@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name="multimedias")
 public class Multimedia implements Serializable{
@@ -27,7 +29,8 @@ public class Multimedia implements Serializable{
 	
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_question", nullable = false)
-    private Question question;
+	@JsonManagedReference
+	private Question question;
 	
 	
 	

@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name="reponses_eleves")
 public class ReponseEleve implements Serializable{
@@ -26,11 +28,13 @@ public class ReponseEleve implements Serializable{
 	
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_user", nullable = false)
-    private User user;
+	@JsonManagedReference
+	private User user;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_question", nullable = false)
-    private Question question;
+	@JsonManagedReference
+	private Question question;
 	
 	
 	public ReponseEleve(String reponse_eleve) {
