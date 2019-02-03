@@ -15,9 +15,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -32,35 +36,45 @@ public class Question implements Serializable{
 
 	@Id @GeneratedValue
 	private Long id_question;
+	
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column
 	private Date date_creation_question;
+	
+	@UpdateTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column
+	private Date date_update_question;
+	
 	@Column
 	private String question;
 	@Column(length=70)
 	private String type;
 	@Column
 	private Integer points;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_quizz", nullable = false)
-	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JsonIgnore
 	private Quizz quizz;
 	
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "question", orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER,mappedBy = "question")
 	@JsonIgnore
 	@OnDelete(action = OnDeleteAction.CASCADE) 
 	private Set<Indice> indices =  new HashSet<Indice>();
 	
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "question", orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER,mappedBy = "question")
 	@JsonIgnore
 	@OnDelete(action = OnDeleteAction.CASCADE) 
 	private Set<Multimedia> medias =  new HashSet<Multimedia>();
 	
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "question", orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER,mappedBy = "question")
 	@JsonIgnore
 	@OnDelete(action = OnDeleteAction.CASCADE) 
 	private Set<Reponse> reponses =  new HashSet<Reponse>();
 	
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "question", orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER,mappedBy = "question")
 	@JsonIgnore
 	@OnDelete(action = OnDeleteAction.CASCADE) 
 	private Set<ReponseEleve> reponsesEleve =  new HashSet<ReponseEleve>();
@@ -109,31 +123,43 @@ public class Question implements Serializable{
 
 
 	public Long getId_question() {
-		return id_question;
+		return this.id_question;
 	}
 
 
 
 	public Date getDate_creation_question() {
-		return date_creation_question;
+		return this.date_creation_question;
 	}
 
 
 
 	public String getQuestion() {
-		return question;
+		return this.question;
 	}
 
 
 
 	public String getType() {
-		return type;
+		return this.type;
+	}
+	
+
+
+	public Date getDate_update_question() {
+		return date_update_question;
+	}
+
+
+
+	public void setDate_update_question(Date date_update_question) {
+		this.date_update_question = date_update_question;
 	}
 
 
 
 	public Integer getPoints() {
-		return points;
+		return this.points;
 	}
 
 
@@ -169,7 +195,7 @@ public class Question implements Serializable{
 
 
 	public Quizz getQuizz() {
-		return quizz;
+		return this.quizz;
 	}
 
 
@@ -181,7 +207,7 @@ public class Question implements Serializable{
 
 
 	public Set<Indice> getIndices() {
-		return indices;
+		return this.indices;
 	}
 
 
@@ -193,7 +219,7 @@ public class Question implements Serializable{
 
 
 	public Set<Multimedia> getMedias() {
-		return medias;
+		return this.medias;
 	}
 
 
@@ -205,7 +231,7 @@ public class Question implements Serializable{
 
 
 	public Set<Reponse> getReponses() {
-		return reponses;
+		return this.reponses;
 	}
 
 
@@ -217,7 +243,7 @@ public class Question implements Serializable{
 
 
 	public Set<ReponseEleve> getReponsesEleve() {
-		return reponsesEleve;
+		return this.reponsesEleve;
 	}
 
 

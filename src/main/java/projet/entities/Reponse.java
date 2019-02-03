@@ -11,11 +11,16 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -30,12 +35,21 @@ public class Reponse implements Serializable{
 	private String reponse;
 	@Column
 	private boolean isCorrect;
+	
+	
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column
 	private Date date_creation_reponse;
 	
+	@UpdateTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column
+	private Date date_update_reponse;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_question", nullable = false)
-	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JsonIgnore
 	private Question question;
 	
 	
@@ -91,6 +105,16 @@ public class Reponse implements Serializable{
 
 	public void setDate_creation_reponse(Date date_creation_reponse) {
 		this.date_creation_reponse = date_creation_reponse;
+	}
+	
+	
+
+	public Date getDate_update_reponse() {
+		return date_update_reponse;
+	}
+
+	public void setDate_update_reponse(Date date_update_reponse) {
+		this.date_update_reponse = date_update_reponse;
 	}
 
 	public Question getQuestion() {

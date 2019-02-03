@@ -17,9 +17,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -40,17 +45,25 @@ public class Quizz  implements Serializable{
 	private String matiere;
 	@Column
 	private String periode;
+	
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column
 	private Date date_creation_quizz;
 	
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "quizz", orphanRemoval = true)
+	@UpdateTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column
+	private Date date_update_quizz;
+	
+	@OneToMany(fetch = FetchType.EAGER,mappedBy = "quizz")
 	@JsonIgnore
 	@OnDelete(action = OnDeleteAction.CASCADE) 
 	private Set<Question> questions =  new HashSet<Question>();
 	
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_user", nullable = false)
-	 @OnDelete(action = OnDeleteAction.CASCADE)
+	@JsonIgnore
     private User user;
 	
 	
@@ -113,6 +126,20 @@ public class Quizz  implements Serializable{
 	public void setDate_creation_quizz(Date date_creation_quizz) {
 		this.date_creation_quizz = date_creation_quizz;
 	}
+	
+
+	public Date getDate_update_quizz() {
+		return date_update_quizz;
+	}
+
+
+
+
+	public void setDate_update_quizz(Date date_update_quizz) {
+		this.date_update_quizz = date_update_quizz;
+	}
+
+
 
 
 	public Set<Question> getQuestions() {

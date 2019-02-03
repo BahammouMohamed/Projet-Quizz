@@ -18,6 +18,7 @@ import projet.entities.Question;
 import projet.entities.Quizz;
 import projet.entities.Reponse;
 import projet.entities.ReponseEleve;
+import projet.entities.User;
 import projet.exceptions.ResourceNotFoundException;
 
 
@@ -72,6 +73,11 @@ public class QuestionService {
 	@RequestMapping(value="/questions/{id}/quizz",method=RequestMethod.GET)
     public Quizz getQuizz(@PathVariable Long id) {
         return questionRepository.findById(id).get().getQuizz();
+    }
+	
+	@RequestMapping(value="/questions/{id}/quizz/user",method=RequestMethod.GET)
+    public User getUser(@PathVariable Long id) {
+        return questionRepository.findById(id).get().getQuizz().getUser();
     }
 	
 	@RequestMapping(value="/questions/{id}/indices",method=RequestMethod.GET)

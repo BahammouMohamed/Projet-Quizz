@@ -11,11 +11,16 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -27,21 +32,29 @@ public class Indice implements Serializable{
 	private Long id_indice;
 	@Column
 	private String indice;
+	
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column
 	private Date date_creation_indice;
 	
+	@UpdateTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column
+	private Date date_update_indice;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_question", nullable = false)
-	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JsonIgnore
 	private Question question;
 	
 	
 	
 	
-	public Indice(String indice, Date date_creation_indice) {
+	public Indice(String indice) {
 		super();
 		this.indice = indice;
-		this.date_creation_indice = date_creation_indice;
+		//this.date_creation_indice = date_creation_indice;
 	}
 
 	public Indice() {
@@ -51,10 +64,10 @@ public class Indice implements Serializable{
 
 	
 
-	public Indice(String indice, Date date_creation_indice, Question question) {
+	public Indice(String indice, Question question) {
 		super();
 		this.indice = indice;
-		this.date_creation_indice = date_creation_indice;
+		//this.date_creation_indice = date_creation_indice;
 		this.question = question;
 	}
 
@@ -80,6 +93,15 @@ public class Indice implements Serializable{
 
 	public void setDate_creation_indice(Date date_creation_indice) {
 		this.date_creation_indice = date_creation_indice;
+	}
+	
+	
+	public Date getDate_update_indice() {
+		return date_update_indice;
+	}
+
+	public void setDate_update_indice(Date date_update_indice) {
+		this.date_update_indice = date_update_indice;
 	}
 
 	public Question getQuestion() {

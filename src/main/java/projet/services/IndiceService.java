@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import projet.dao.IndiceRepository;
 import projet.entities.Indice;
+import projet.entities.Question;
+import projet.entities.Quizz;
+import projet.entities.User;
 import projet.exceptions.ResourceNotFoundException;
 
 
@@ -53,9 +56,24 @@ public class IndiceService {
 			ind.setDate_creation_indice(ind.getDate_creation_indice());
 	        return indiceRepository.save(ind);
 	    }).orElseThrow(() -> new ResourceNotFoundException("IndiceID " + id + " not found"));
-		
-	   
     }
+	
+	@RequestMapping(value="/indices/{id}/question",method=RequestMethod.GET)
+    public Question getQuestion(@PathVariable Long id) {
+        return indiceRepository.findById(id).get().getQuestion();
+    }
+	
+	@RequestMapping(value="/indices/{id}/question/quizz",method=RequestMethod.GET)
+    public Quizz getQuizz(@PathVariable Long id) {
+        return indiceRepository.findById(id).get().getQuestion().getQuizz();
+    }
+	
+	@RequestMapping(value="/indices/{id}/question/quizz/user",method=RequestMethod.GET)
+    public User getUser(@PathVariable Long id) {
+        return indiceRepository.findById(id).get().getQuestion().getQuizz().getUser();
+    }
+	
+	
 	
 	
 	

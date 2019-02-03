@@ -19,6 +19,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -34,12 +35,12 @@ public class ReponseEleve implements Serializable{
 	
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_user", nullable = false)
-	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JsonIgnore
 	private User user;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_question", nullable = false)
-	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JsonIgnore
 	private Question question;
 	
 	

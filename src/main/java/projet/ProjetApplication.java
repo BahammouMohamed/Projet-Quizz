@@ -1,24 +1,26 @@
 package projet;
 
 
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 import projet.dao.IndiceRepository;
 import projet.dao.QuestionRepository;
 import projet.dao.QuizzRepository;
 import projet.dao.ReponseEleveRepository;
 import projet.dao.ReponseRepository;
 import projet.dao.UserRepository;
-import projet.entities.*;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
+import projet.entities.Indice;
+import projet.entities.Question;
+import projet.entities.Quizz;
+import projet.entities.Reponse;
+import projet.entities.ReponseEleve;
+import projet.entities.User;
 
 
 
@@ -45,13 +47,13 @@ public class ProjetApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		User user1 = new User("flauzac","olivier","olivier@gmail.com","olivier","olivier","enseignant");
-		User user2 = new User("stefennel","angello","angello@gmail.com","angello","angello","enseignant");
-		User user3 = new User("bernard","thibaud","thibaud@gmail.com","thibaud","thibaud","enseignant");
+		User user1 = new User("flauzac","olivier","olivier@gmail.com","olivier","olivier","enseignant",false);
+		User user2 = new User("stefennel","angello","angello@gmail.com","angello","angello","enseignant",false);
+		User user3 = new User("bernard","thibaud","thibaud@gmail.com","thibaud","thibaud","enseignant",false);
 		
-		User eleve1 = new User("bahammou","mohamed","mohamed@gmail.com","mohamed123","mohamed123","eleve");
-		User eleve2 = new User("alla","reda","reda@gmail.com","reda","reda","eleve");
-		User eleve3 = new User("belghazi","zouhair","zouhair@gmail.com","zouhair","zouhair","eleve");
+		User eleve1 = new User("bahammou","mohamed","mohamed@gmail.com","mohamed123","mohamed123","eleve",false);
+		User eleve2 = new User("alla","reda","reda@gmail.com","reda","reda","eleve",false);
+		User eleve3 = new User("belghazi","zouhair","zouhair@gmail.com","zouhair","zouhair","eleve",false);
 		
 		userDao.save(user1);
 		userDao.save(user2);
@@ -76,15 +78,15 @@ public class ProjetApplication implements CommandLineRunner{
 		Question question2 = new Question(new Date(), "question 2", "simple", 4,quizz1);
 		Question question3 = new Question(new Date(), "question 3", "media", 5,quizz1);
 		
-		Indice indice1_1 = new Indice("indice 1 question 1", new Date(),question1 );
-		Indice indice2_1 = new Indice("indice 2 question 1", new Date(),question1 );
-		Indice indice3_1 = new Indice("indice 3 question 1", new Date(),question1 );
+		Indice indice1_1 = new Indice("indice 1 question 1",question1 );
+		Indice indice2_1 = new Indice("indice 2 question 1",question1 );
+		Indice indice3_1 = new Indice("indice 3 question 1", question1 );
 		
-		Indice indice1_2 = new Indice("indice 1 question 2", new Date(),question2 );
-		Indice indice2_2 = new Indice("indice 2 question 2", new Date(),question2 );
+		Indice indice1_2 = new Indice("indice 1 question 2", question2 );
+		Indice indice2_2 = new Indice("indice 2 question 2", question2 );
 				
-		Indice indice1_3 = new Indice("indice 1 question 3", new Date(),question3  );
-		Indice indice2_3 = new Indice("indice 2 question 3", new Date(),question3  );
+		Indice indice1_3 = new Indice("indice 1 question 3", question3  );
+		Indice indice2_3 = new Indice("indice 2 question 3", question3  );
 		
 		
 		
@@ -92,18 +94,18 @@ public class ProjetApplication implements CommandLineRunner{
 		Question question5 = new Question(new Date(), "question 5", "simple", 4,quizz2);
 		Question question6 = new Question(new Date(), "question 6", "media", 5,quizz2);
 		
-		Indice indice1_4 = new Indice("indice 1 question 4", new Date(),question4 );
-		Indice indice1_5 = new Indice("indice 1 question 5", new Date(),question5 );
-		Indice indice1_6 = new Indice("indice 1 question 6", new Date() ,question6);
+		Indice indice1_4 = new Indice("indice 1 question 4", question4 );
+		Indice indice1_5 = new Indice("indice 1 question 5", question5 );
+		Indice indice1_6 = new Indice("indice 1 question 6", question6);
 				
 		
 		Question question7 = new Question(new Date(), "question 7", "media", 2,quizz3);
 		Question question8 = new Question(new Date(), "question 8", "simple", 4,quizz3);
 		Question question9 = new Question(new Date(), "question 9", "media", 5,quizz3);
 		
-		Indice indice1_7 = new Indice("indice 1 question 7", new Date(),question7 );
-		Indice indice1_8 = new Indice("indice 1 question 8", new Date(),question8 );
-		Indice indice1_9 = new Indice("indice 1 question 9", new Date(),question9 );
+		Indice indice1_7 = new Indice("indice 1 question 7", question7 );
+		Indice indice1_8 = new Indice("indice 1 question 8", question8 );
+		Indice indice1_9 = new Indice("indice 1 question 9", question9 );
 		
 		Question question10 = new Question(new Date(), "question 10", "media10", 5,quizz4);
 				

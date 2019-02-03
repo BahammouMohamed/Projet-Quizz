@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import projet.dao.QuizzRepository;
 import projet.entities.Question;
 import projet.entities.Quizz;
+import projet.entities.User;
 import projet.exceptions.ResourceNotFoundException;
 
 
@@ -65,6 +66,11 @@ public class QuizzService {
 	@RequestMapping(value="/quizzs/{id}/questions",method=RequestMethod.GET)
     public Set<Question> getQuestions(@PathVariable Long id) {
         return quizzRepository.findById(id).get().getQuestions();
+    }
+	
+	@RequestMapping(value="/quizzs/{id}/user",method=RequestMethod.GET)
+    public User getUser(@PathVariable Long id) {
+        return quizzRepository.findById(id).get().getUser();
     }
 	
 }

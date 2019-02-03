@@ -38,18 +38,20 @@ public class User implements Serializable{
 	private String password_user;
 	@Column(length=25)
 	private String status;
+	@Column
+	private boolean validated;
 	
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "user", orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER,mappedBy = "user")
 	@JsonIgnore
 	@OnDelete(action = OnDeleteAction.CASCADE) 
 	private Set<Quizz> quizzs =  new HashSet<Quizz>();
 	
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "user" , orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER,mappedBy = "user" )
 	@JsonIgnore
 	@OnDelete(action = OnDeleteAction.CASCADE) 
 	private Set<ReponseEleve> reponses =  new HashSet<ReponseEleve>();
 	
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "user", orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER,mappedBy = "user")
 	@JsonIgnore
 	@OnDelete(action = OnDeleteAction.CASCADE) 
 	private Set<Score> scores =  new HashSet<Score>();
@@ -63,7 +65,7 @@ public class User implements Serializable{
 	}
 	
 	public User(String nom_user, String prenom_user, String email_user, String pseudo_user, String password_user,
-			String status) {
+			String status, boolean validated) {
 		super();
 		this.nom_user = nom_user;
 		this.prenom_user = prenom_user;
@@ -71,6 +73,7 @@ public class User implements Serializable{
 		this.pseudo_user = pseudo_user;
 		this.password_user = password_user;
 		this.status = status;
+		this.validated = validated;
 	}
 
 	public Long getId_user() {
@@ -132,6 +135,14 @@ public class User implements Serializable{
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public boolean isValidated() {
+		return validated;
+	}
+
+	public void setValidated(boolean validated) {
+		this.validated = validated;
 	}
 	
 	

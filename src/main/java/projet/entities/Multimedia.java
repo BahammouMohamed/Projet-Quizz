@@ -11,11 +11,16 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -28,14 +33,23 @@ public class Multimedia implements Serializable{
 	private Long id_media;
 	@Column
 	private String path_media;
+	
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column
 	private Date date_creation_media;
+	
+	@UpdateTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column
+	private Date date_update_media;
+	
 	@Column(length=50)
 	private String type_media; //sons,video,img...
 	
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_question", nullable = false)
-	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JsonIgnore
 	private Question question;
 	
 	
@@ -77,6 +91,16 @@ public class Multimedia implements Serializable{
 
 	public String getType_media() {
 		return type_media;
+	}
+	
+	
+
+	public Date getDate_update_media() {
+		return date_update_media;
+	}
+
+	public void setDate_update_media(Date date_update_media) {
+		this.date_update_media = date_update_media;
 	}
 
 	public void setId_media(Long id_media) {
