@@ -29,11 +29,13 @@ import org.hibernate.annotations.UpdateTimestamp;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name="quizzs")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_quizz")
 public class Quizz  implements Serializable{
 
@@ -61,30 +63,18 @@ public class Quizz  implements Serializable{
 	@OnDelete(action = OnDeleteAction.CASCADE) 
 	private Set<Question> questions =  new HashSet<Question>();
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user", nullable = false)
-	@JsonIgnore
     private User user;
 	
 	
 	
-	public Quizz(String niveau, String matiere, String periode, Date date_creation_quizz) {
+
+	public Quizz(String niveau, String matiere, String periode, User user) {
 		super();
 		this.niveau = niveau;
 		this.matiere = matiere;
 		this.periode = periode;
-		this.date_creation_quizz = date_creation_quizz;
-	}
-	
-	
-	
-	
-	public Quizz(String niveau, String matiere, String periode, Date date_creation_quizz, User user) {
-		super();
-		this.niveau = niveau;
-		this.matiere = matiere;
-		this.periode = periode;
-		this.date_creation_quizz = date_creation_quizz;
 		this.user = user;
 	}
 

@@ -21,11 +21,13 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name="multimedias")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_media")
 public class Multimedia implements Serializable{
 	
@@ -47,9 +49,8 @@ public class Multimedia implements Serializable{
 	@Column(length=50)
 	private String type_media; //sons,video,img...
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_question", nullable = false)
-	@JsonIgnore
 	private Question question;
 	
 	
@@ -58,25 +59,13 @@ public class Multimedia implements Serializable{
 		super();
 	}
 	
-	public Multimedia(String path_media, Date date_creation_media, String type_media) {
+	public Multimedia(String path_media, String type_media, Question question) {
 		super();
 		this.path_media = path_media;
-		this.date_creation_media = date_creation_media;
-		this.type_media = type_media;
-	}
-	
-	
-
-	public Multimedia(String path_media, Date date_creation_media, String type_media, Question question) {
-		super();
-		this.path_media = path_media;
-		this.date_creation_media = date_creation_media;
 		this.type_media = type_media;
 		this.question = question;
 	}
 	
-	
-
 	public Long getId_media() {
 		return id_media;
 	}

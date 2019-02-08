@@ -15,17 +15,16 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name="indices")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_indice")
 public class Indice implements Serializable{
 	@Id @GeneratedValue
@@ -43,9 +42,8 @@ public class Indice implements Serializable{
 	@Column
 	private Date date_update_indice;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_question", nullable = false)
-	@JsonIgnore
 	private Question question;
 	
 	
@@ -54,7 +52,6 @@ public class Indice implements Serializable{
 	public Indice(String indice) {
 		super();
 		this.indice = indice;
-		//this.date_creation_indice = date_creation_indice;
 	}
 
 	public Indice() {
@@ -67,7 +64,6 @@ public class Indice implements Serializable{
 	public Indice(String indice, Question question) {
 		super();
 		this.indice = indice;
-		//this.date_creation_indice = date_creation_indice;
 		this.question = question;
 	}
 

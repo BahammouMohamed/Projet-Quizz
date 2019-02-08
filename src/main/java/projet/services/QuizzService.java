@@ -52,8 +52,6 @@ public class QuizzService {
 	@RequestMapping(value="/quizzs/{id}",method=RequestMethod.PUT)
     public Quizz updateQuizz(@PathVariable Long id,@RequestBody Quizz quizz) {
 		return quizzRepository.findById(id).map(qui -> {
-			qui.setId_quizz(id);
-			qui.setDate_creation_quizz(qui.getDate_creation_quizz());
 			qui.setMatiere(quizz.getMatiere());
 			qui.setNiveau(quizz.getNiveau());
 			qui.setPeriode(quizz.getPeriode());

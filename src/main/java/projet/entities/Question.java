@@ -26,12 +26,14 @@ import org.hibernate.annotations.UpdateTimestamp;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name="questions")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_question")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Question implements Serializable{
 
 	@Id @GeneratedValue
@@ -54,9 +56,8 @@ public class Question implements Serializable{
 	@Column
 	private Integer points;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_quizz", nullable = false)
-	@JsonIgnore
 	private Quizz quizz;
 	
 	@OneToMany(fetch = FetchType.EAGER,mappedBy = "question")
@@ -82,9 +83,8 @@ public class Question implements Serializable{
 	
 	
 	
-	public Question(Date date_creation_question, String question, String type, Integer points) {
+	public Question( String question, String type, Integer points) {
 		super();
-		this.date_creation_question = date_creation_question;
 		this.question = question;
 		this.type = type;
 		this.points = points;
@@ -92,28 +92,13 @@ public class Question implements Serializable{
 
 
 
-	public Question(Date date_creation_question, String question, String type, Integer points, Quizz quizz) {
+	public Question( String question, String type, Integer points, Quizz quizz) {
 		super();
-		this.date_creation_question = date_creation_question;
 		this.question = question;
 		this.type = type;
 		this.points = points;
 		this.quizz = quizz;
 	}
-
-
-
-	public Question(Long id_question, Date date_creation_question, String question, String type, Integer points) {
-		super();
-		this.id_question = id_question;
-		this.date_creation_question = date_creation_question;
-		this.question = question;
-		this.type = type;
-		this.points = points;
-	}
-	
-	
-
 
 
 	public Question() {

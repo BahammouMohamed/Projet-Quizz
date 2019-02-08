@@ -21,11 +21,13 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity 
 @Table(name="reponses")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_reponse")
 public class Reponse implements Serializable{
 	
@@ -47,31 +49,19 @@ public class Reponse implements Serializable{
 	@Column
 	private Date date_update_reponse;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_question", nullable = false)
-	@JsonIgnore
 	private Question question;
 	
-	
-	
-	public Reponse(String reponse, boolean isCorrect, Date date_creation_reponse) {
-		super();
-		this.reponse = reponse;
-		this.isCorrect = isCorrect;
-		this.date_creation_reponse = date_creation_reponse;
-	}
 	
 	public Reponse() {
 		super();
 	}
 	
-	
-
-	public Reponse(String reponse, boolean isCorrect, Date date_creation_reponse, Question question) {
+	public Reponse(String reponse, boolean isCorrect, Question question) {
 		super();
 		this.reponse = reponse;
 		this.isCorrect = isCorrect;
-		this.date_creation_reponse = date_creation_reponse;
 		this.question = question;
 	}
 

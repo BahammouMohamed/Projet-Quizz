@@ -53,7 +53,6 @@ public class IndiceService {
     public Indice updateQuizz(@PathVariable Long id,@RequestBody Indice indice) {
 		return indiceRepository.findById(id).map(ind -> {
 			ind.setIndice(indice.getIndice());
-			ind.setDate_creation_indice(ind.getDate_creation_indice());
 	        return indiceRepository.save(ind);
 	    }).orElseThrow(() -> new ResourceNotFoundException("IndiceID " + id + " not found"));
     }

@@ -63,8 +63,7 @@ public class QuestionService {
 			quest.setQuestion(question.getQuestion());
 			quest.setType(question.getType());
 			quest.setPoints(question.getPoints());
-			quest.setDate_creation_question(quest.getDate_creation_question());
-	        return questionRepository.save(quest);
+			return questionRepository.save(quest);
 	    }).orElseThrow(() -> new ResourceNotFoundException("QuestionID " + id + " not found"));
 		
 	   

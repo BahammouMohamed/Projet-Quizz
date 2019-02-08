@@ -1,7 +1,6 @@
 package projet;
 
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,19 +63,19 @@ public class ProjetApplication implements CommandLineRunner{
 		
 		
 				
-		Quizz quizz1 = new Quizz("bac", "math", "seance 1", new Date(),user1);
-		Quizz quizz2 = new Quizz("cm1", "physique", "seance 2", new Date(),user2);
-		Quizz quizz3 = new Quizz("cm2", "science", "seance 4", new Date(),user3);
-		Quizz quizz4 = new Quizz("cm2", "science math", "seance 3", new Date(),user3);
+		Quizz quizz1 = new Quizz("bac", "math", "seance 1",user1);
+		Quizz quizz2 = new Quizz("cm1", "physique", "seance 2",user2);
+		Quizz quizz3 = new Quizz("cm2", "science", "seance 4",user3);
+		Quizz quizz4 = new Quizz("cm2", "science math", "seance 3",user3);
 		
 		quizzDao.save(quizz1);
 		quizzDao.save(quizz2);
 		quizzDao.save(quizz3);
 		quizzDao.save(quizz4);
 		
-		Question question1 = new Question(new Date(), "question 1", "media", 2,quizz1);
-		Question question2 = new Question(new Date(), "question 2", "simple", 4,quizz1);
-		Question question3 = new Question(new Date(), "question 3", "media", 5,quizz1);
+		Question question1 = new Question("question 1", "media", 2,quizz1);
+		Question question2 = new Question("question 2", "simple", 4,quizz1);
+		Question question3 = new Question("question 3", "media", 5,quizz1);
 		
 		Indice indice1_1 = new Indice("indice 1 question 1",question1 );
 		Indice indice2_1 = new Indice("indice 2 question 1",question1 );
@@ -90,24 +89,24 @@ public class ProjetApplication implements CommandLineRunner{
 		
 		
 		
-		Question question4 = new Question(new Date(), "question 4", "media", 2,quizz2);
-		Question question5 = new Question(new Date(), "question 5", "simple", 4,quizz2);
-		Question question6 = new Question(new Date(), "question 6", "media", 5,quizz2);
+		Question question4 = new Question("question 4", "media", 2,quizz2);
+		Question question5 = new Question( "question 5", "simple", 4,quizz2);
+		Question question6 = new Question("question 6", "media", 5,quizz2);
 		
 		Indice indice1_4 = new Indice("indice 1 question 4", question4 );
 		Indice indice1_5 = new Indice("indice 1 question 5", question5 );
 		Indice indice1_6 = new Indice("indice 1 question 6", question6);
 				
 		
-		Question question7 = new Question(new Date(), "question 7", "media", 2,quizz3);
-		Question question8 = new Question(new Date(), "question 8", "simple", 4,quizz3);
-		Question question9 = new Question(new Date(), "question 9", "media", 5,quizz3);
+		Question question7 = new Question( "question 7", "media", 2,quizz3);
+		Question question8 = new Question( "question 8", "simple", 4,quizz3);
+		Question question9 = new Question( "question 9", "media", 5,quizz3);
 		
 		Indice indice1_7 = new Indice("indice 1 question 7", question7 );
 		Indice indice1_8 = new Indice("indice 1 question 8", question8 );
 		Indice indice1_9 = new Indice("indice 1 question 9", question9 );
 		
-		Question question10 = new Question(new Date(), "question 10", "media10", 5,quizz4);
+		Question question10 = new Question("question 10", "media10", 5,quizz4);
 				
 		questionDao.save(question1);
 		questionDao.save(question2);
@@ -137,32 +136,32 @@ public class ProjetApplication implements CommandLineRunner{
 		
 		
 		
-		Reponse rep1_1 = new Reponse("Reponse 1 question 1", false, new Date(), question1);
-		Reponse rep2_1 = new Reponse("Reponse 2 question 1", true, new Date(), question1);
+		Reponse rep1_1 = new Reponse("Reponse 1 question 1", false, question1);
+		Reponse rep2_1 = new Reponse("Reponse 2 question 1", true, question1);
 		
-		Reponse rep1_2 = new Reponse("Reponse 1 question 2", true, new Date(), question2);
-		Reponse rep2_2 = new Reponse("Reponse 2 question 2", false, new Date(), question2);
+		Reponse rep1_2 = new Reponse("Reponse 1 question 2", true, question2);
+		Reponse rep2_2 = new Reponse("Reponse 2 question 2", false, question2);
 		
-		Reponse rep1_3 = new Reponse("Reponse 1 question 3", false, new Date(), question3);
-		Reponse rep2_3 = new Reponse("Reponse 2 question 3", true, new Date(), question3);
+		Reponse rep1_3 = new Reponse("Reponse 1 question 3", false, question3);
+		Reponse rep2_3 = new Reponse("Reponse 2 question 3", true, question3);
 		
-		Reponse rep1_4 = new Reponse("Reponse 1 question 4", false, new Date(), question4);
-		Reponse rep2_4 = new Reponse("Reponse 2 question 4", true, new Date(), question4);
+		Reponse rep1_4 = new Reponse("Reponse 1 question 4", false, question4);
+		Reponse rep2_4 = new Reponse("Reponse 2 question 4", true, question4);
 		
-		Reponse rep1_5 = new Reponse("Reponse 1 question 5", false, new Date(), question5);
-		Reponse rep2_5 = new Reponse("Reponse 2 question 5", true, new Date(), question5);
+		Reponse rep1_5 = new Reponse("Reponse 1 question 5", false, question5);
+		Reponse rep2_5 = new Reponse("Reponse 2 question 5", true, question5);
 		
-		Reponse rep1_6 = new Reponse("Reponse 1 question 6", false, new Date(), question6);
-		Reponse rep2_6 = new Reponse("Reponse 2 question 6", true, new Date(), question6);
+		Reponse rep1_6 = new Reponse("Reponse 1 question 6", false, question6);
+		Reponse rep2_6 = new Reponse("Reponse 2 question 6", true, question6);
 		
-		Reponse rep1_7 = new Reponse("Reponse 1 question 7", false, new Date(), question7);
-		Reponse rep2_7 = new Reponse("Reponse 2 question 7", true, new Date(), question7);
+		Reponse rep1_7 = new Reponse("Reponse 1 question 7", false, question7);
+		Reponse rep2_7 = new Reponse("Reponse 2 question 7", true, question7);
 		
-		Reponse rep1_8 = new Reponse("Reponse 1 question 8", false, new Date(), question8);
-		Reponse rep2_8 = new Reponse("Reponse 2 question 8", true, new Date(), question8);
+		Reponse rep1_8 = new Reponse("Reponse 1 question 8", false, question8);
+		Reponse rep2_8 = new Reponse("Reponse 2 question 8", true, question8);
 		
-		Reponse rep1_9 = new Reponse("Reponse 1 question 9", false, new Date(), question9);
-		Reponse rep2_9 = new Reponse("Reponse 2 question 9", true, new Date(), question9);
+		Reponse rep1_9 = new Reponse("Reponse 1 question 9", false, question9);
+		Reponse rep2_9 = new Reponse("Reponse 2 question 9", true, question9);
 		
 		repDao.save(rep1_1);repDao.save(rep2_1);
 		repDao.save(rep1_2);repDao.save(rep2_2);

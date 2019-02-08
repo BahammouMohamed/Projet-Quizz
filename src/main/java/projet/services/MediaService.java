@@ -54,7 +54,6 @@ public class MediaService {
 		return mediaRepository.findById(id).map(med -> {
 			med.setPath_media(media.getPath_media());
 			med.setType_media(media.getType_media());
-			med.setDate_creation_media(med.getDate_creation_media());
 	        return mediaRepository.save(med);
 	    }).orElseThrow(() -> new ResourceNotFoundException("MultimediaID " + id + " not found"));
     }
