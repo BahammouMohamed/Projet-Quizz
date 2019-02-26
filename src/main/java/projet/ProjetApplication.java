@@ -231,8 +231,10 @@ public class ProjetApplication implements CommandLineRunner{
 		System.out.println("############################################################");
 		*/
 		List<User> users = userDao.findAll();
-		users.forEach(u->System.out.println(u.getId_user()));
+		users.forEach(u->System.out.println(u.getPseudo()));
 		
-		
+		User user = userDao.findByPseudo("olivier");
+		System.err.println(user.getPseudo());
+		System.err.println(user.getEmail());
 	}
 }

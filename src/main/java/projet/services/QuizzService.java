@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import projet.exceptions.ResourceNotFoundException;
 
 
 @RestController
+@CrossOrigin("*")
 public class QuizzService {
 	
 	@Autowired
@@ -37,6 +39,7 @@ public class QuizzService {
 	
 	@RequestMapping(value="/quizzs",method=RequestMethod.POST)
     public Quizz createQuizz( @RequestBody Quizz quizz) {
+		
         return quizzRepository.save(quizz);
     }
 

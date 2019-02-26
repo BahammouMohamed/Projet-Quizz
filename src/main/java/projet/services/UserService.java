@@ -18,6 +18,7 @@ import projet.entities.User;
 
 
 @RestController
+@CrossOrigin("*")
 public class UserService {
 	
 	@Autowired
@@ -30,12 +31,21 @@ public class UserService {
 	
 	@RequestMapping(value="/users/{id}",method=RequestMethod.GET)
     public User getUser(@PathVariable Long id) {
-        return userRepository.findById(id).orElse(null);
+		User user = new User();
+		user = userRepository.findById(id).orElse(null);
+		user.setPassword("");
+        return user;
     }
 	
 	@RequestMapping(value="/users",method=RequestMethod.POST)
-    public User createUser( @RequestBody User user) {
-        return userRepository.save(user);
+    public User createUser( @RequestBody User user) throws Exception{
+		User usertmp = userRepository.findByPseudo(user.getPseudo());
+		if(usertmp!=null)
+			throw new Exception("Pseudo existe déja");
+		usertmp = userRepository.findByEmail(user.getEmail());
+		if(usertmp != null)
+			throw new Exception("Email existe déja");
+		return userRepository.save(user);
     }
 
 	@RequestMapping(value="/users/{id}",method=RequestMethod.DELETE)
@@ -50,11 +60,11 @@ public class UserService {
 	@RequestMapping(value="/users/{id}",method=RequestMethod.PUT)
     public User updateUser(@PathVariable Long id,@RequestBody User userRequest) {
 		return userRepository.findById(id).map(user -> {
-			user.setNom_user(userRequest.getNom_user());
-			user.setPrenom_user(userRequest.getPrenom_user());
-			user.setPseudo_user(userRequest.getPseudo_user());
-			user.setPassword_user(userRequest.getPassword_user());
-			user.setEmail_user(userRequest.getEmail_user());
+			user.setNom(userRequest.getNom());
+			user.setPrenom(userRequest.getPrenom());
+			user.setPseudo(userRequest.getPseudo());
+			user.setPassword(userRequest.getPassword());
+			user.setEmail(userRequest.getEmail());
 			user.setStatus(userRequest.getStatus());
 	        return userRepository.save(user);
 	    }).orElseThrow(() -> new ResourceNotFoundException("UserID " + id + " not found"));

@@ -36,7 +36,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Entity
 @Table(name="quizzs")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_quizz")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_quizz")
 public class Quizz  implements Serializable{
 
 	@Id @GeneratedValue
@@ -63,7 +63,7 @@ public class Quizz  implements Serializable{
 	@OnDelete(action = OnDeleteAction.CASCADE) 
 	private Set<Question> questions =  new HashSet<Question>();
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_user", nullable = false)
     private User user;
 	
