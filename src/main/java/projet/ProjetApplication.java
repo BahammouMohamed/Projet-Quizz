@@ -63,7 +63,7 @@ public class ProjetApplication implements CommandLineRunner{
 		
 		
 				
-		Quizz quizz1 = new Quizz("bac", "math", "seance 1",user1);
+		Quizz quizz1 = new Quizz("lycée", "sport", "seance 1",user1);
 		Quizz quizz2 = new Quizz("cm1", "physique", "seance 2",user2);
 		Quizz quizz3 = new Quizz("cm2", "science", "seance 4",user3);
 		Quizz quizz4 = new Quizz("cm2", "science math", "seance 3",user3);
@@ -73,19 +73,19 @@ public class ProjetApplication implements CommandLineRunner{
 		quizzDao.save(quizz3);
 		quizzDao.save(quizz4);
 		
-		Question question1 = new Question("question 1", "media", 2,quizz1);
-		Question question2 = new Question("question 2", "simple", 4,quizz1);
-		Question question3 = new Question("question 3", "media", 5,quizz1);
+		Question question1 = new Question("Qui a gagner le Ballon d'OR en 2018 ?", "media", 2,quizz1);
+		Question question2 = new Question("Qui a gagner la coupe du monde 2018 ?", "simple", 4,quizz1);
+		Question question3 = new Question("Ngolo Kante est de quelle origine ?", "media", 5,quizz1);
 		
-		Indice indice1_1 = new Indice("indice 1 question 1",question1 );
-		Indice indice2_1 = new Indice("indice 2 question 1",question1 );
-		Indice indice3_1 = new Indice("indice 3 question 1", question1 );
+		Indice indice1_1 = new Indice("Natinnalité : Croate",question1 );
+		Indice indice2_1 = new Indice("Il joue actuellement au Real Madrid",question1 );
+		Indice indice3_1 = new Indice("Il a 30 ans", question1 );
 		
-		Indice indice1_2 = new Indice("indice 1 question 2", question2 );
-		Indice indice2_2 = new Indice("indice 2 question 2", question2 );
+		Indice indice1_2 = new Indice("C'est un pays Europeen", question2 );
+		Indice indice2_2 = new Indice("Colé a la Suisse", question2 );
 				
-		Indice indice1_3 = new Indice("indice 1 question 3", question3  );
-		Indice indice2_3 = new Indice("indice 2 question 3", question3  );
+		Indice indice1_3 = new Indice("En Afrique", question3  );
+		Indice indice2_3 = new Indice("Pas dans le Nord de l'Afrique", question3  );
 		
 		
 		
@@ -136,14 +136,15 @@ public class ProjetApplication implements CommandLineRunner{
 		
 		
 		
-		Reponse rep1_1 = new Reponse("Reponse 1 question 1", false, question1);
-		Reponse rep2_1 = new Reponse("Reponse 2 question 1", true, question1);
+		Reponse rep1_1 = new Reponse("Lionnel Messi", false, question1);
+		Reponse rep2_1 = new Reponse("Cristiano Ronaldo", false, question1);
+		Reponse rep3_1 = new Reponse("Luca Modriç", true, question1);
 		
-		Reponse rep1_2 = new Reponse("Reponse 1 question 2", true, question2);
-		Reponse rep2_2 = new Reponse("Reponse 2 question 2", false, question2);
+		Reponse rep1_2 = new Reponse("France", true, question2);
+		Reponse rep2_2 = new Reponse("Espagne", false, question2);
 		
-		Reponse rep1_3 = new Reponse("Reponse 1 question 3", false, question3);
-		Reponse rep2_3 = new Reponse("Reponse 2 question 3", true, question3);
+		Reponse rep1_3 = new Reponse("Maroc", false, question3);
+		Reponse rep2_3 = new Reponse("Mali", true, question3);
 		
 		Reponse rep1_4 = new Reponse("Reponse 1 question 4", false, question4);
 		Reponse rep2_4 = new Reponse("Reponse 2 question 4", true, question4);
@@ -163,7 +164,10 @@ public class ProjetApplication implements CommandLineRunner{
 		Reponse rep1_9 = new Reponse("Reponse 1 question 9", false, question9);
 		Reponse rep2_9 = new Reponse("Reponse 2 question 9", true, question9);
 		
-		repDao.save(rep1_1);repDao.save(rep2_1);
+		Reponse rep1_10 = new Reponse("Reponse 1 question 10", false, question10);
+		Reponse rep2_10 = new Reponse("Reponse 2 question 10", true, question10);
+		
+		repDao.save(rep1_1);repDao.save(rep2_1);repDao.save(rep3_1);
 		repDao.save(rep1_2);repDao.save(rep2_2);
 		repDao.save(rep1_3);repDao.save(rep2_3);
 		repDao.save(rep1_4);repDao.save(rep2_4);
@@ -172,6 +176,7 @@ public class ProjetApplication implements CommandLineRunner{
 		repDao.save(rep1_7);repDao.save(rep2_7);
 		repDao.save(rep1_8);repDao.save(rep2_8);
 		repDao.save(rep1_9);repDao.save(rep2_9);
+		repDao.save(rep1_10);repDao.save(rep2_10);
 		
 		
 		
