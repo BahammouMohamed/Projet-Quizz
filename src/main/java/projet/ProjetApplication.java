@@ -180,17 +180,17 @@ public class ProjetApplication implements CommandLineRunner{
 		
 		
 		
-		ReponseEleve repE1_1 = new ReponseEleve("reponse eleve 1 question 1 ", eleve1, question1);
-		ReponseEleve repE1_2 = new ReponseEleve("reponse eleve 1 question  2", eleve1, question2);
-		ReponseEleve repE1_3 = new ReponseEleve("reponse eleve 1 question  3", eleve1, question3);
+		ReponseEleve repE1_1 = new ReponseEleve("reponse eleve 1 question 1 ", eleve1, question1,true);
+		ReponseEleve repE1_2 = new ReponseEleve("reponse eleve 1 question  2", eleve1, question2,false);
+		ReponseEleve repE1_3 = new ReponseEleve("reponse eleve 1 question  3", eleve1, question3,true);
 		
-		ReponseEleve repE2_4 = new ReponseEleve("reponse eleve 2 question 4 ", eleve2, question4);
-		ReponseEleve repE2_5 = new ReponseEleve("reponse eleve 2 question  5", eleve2, question5);
-		ReponseEleve repE2_6 = new ReponseEleve("reponse eleve 2 question  6", eleve2, question6);
+		ReponseEleve repE2_4 = new ReponseEleve("reponse eleve 2 question 4 ", eleve2, question4,true);
+		ReponseEleve repE2_5 = new ReponseEleve("reponse eleve 2 question  5", eleve2, question5,false);
+		ReponseEleve repE2_6 = new ReponseEleve("reponse eleve 2 question  6", eleve2, question6,true);
 		
-		ReponseEleve repE3_7 = new ReponseEleve("reponse eleve 3 question 7 ", eleve3, question7);
-		ReponseEleve repE3_8 = new ReponseEleve("reponse eleve 3 question 8 ", eleve3, question8);
-		ReponseEleve repE3_9 = new ReponseEleve("reponse eleve 3 question 9 ", eleve3, question9);
+		ReponseEleve repE3_7 = new ReponseEleve("reponse eleve 3 question 7 ", eleve3, question7,true);
+		ReponseEleve repE3_8 = new ReponseEleve("reponse eleve 3 question 8 ", eleve3, question8,true);
+		ReponseEleve repE3_9 = new ReponseEleve("reponse eleve 3 question 9 ", eleve3, question9,false);
 		
 		repEleveDao.save(repE1_1);
 		repEleveDao.save(repE1_2); 
@@ -202,39 +202,7 @@ public class ProjetApplication implements CommandLineRunner{
 		repEleveDao.save(repE3_8);
 		repEleveDao.save(repE3_9);
 		
-		/*
-		List<Quizz> quizzs = quizzDao.findAll();
-		for(Quizz qz:quizzs) {
-			Set<Question> questions = qz.getQuestions();
-			System.out.println("----" +qz.getMatiere() +" " + qz.getNiveau());
-			for(Question qt:questions) {
-				System.out.println("\t "+qt.getQuestion());
-				Set<Indice> indices = qt.getIndices();
-				for(Indice ind:indices) {
-					System.out.println("\t *****"+ind.getIndice());
-				}
-				
-				Set<Reponse> reps = qt.getReponses();
-				for(Reponse rep:reps) {
-					System.out.println("\t ########"+rep.getReponse() +" isCorrect = "+rep.isCorrect());
-				}
-			}
-		}
 		
-		Set<ReponseEleve> repsE1 = userDao.findById(user2.getId_user()).get().getReponses();
-		System.out.println("############################################################");
-		for(ReponseEleve repE:repsE1) {
-			System.out.println("\t ########"+repE.getReponse_eleve() );
-		}
-		System.out.println("############################################################");
-		
-		Set<Quizz> quizzsU3 = userDao.findById(user3.getId_user()).get().getQuizzs();
-		System.out.println("############################################################");
-		for(Quizz q:quizzsU3) {
-			System.out.println("\t ########"+q.getMatiere() );
-		}
-		System.out.println("############################################################");
-		*/
 		List<User> users = userDao.findAll();
 		users.forEach(u->System.out.println(u.getPseudo()));
 		
