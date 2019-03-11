@@ -3,10 +3,21 @@ package projet;
 
 import java.util.List;
 
+import javax.persistence.EntityManagerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import projet.dao.IndiceRepository;
 import projet.dao.QuestionRepository;
@@ -20,7 +31,6 @@ import projet.entities.Quizz;
 import projet.entities.Reponse;
 import projet.entities.ReponseEleve;
 import projet.entities.User;
-
 
 
 @SpringBootApplication
@@ -43,9 +53,11 @@ public class ProjetApplication implements CommandLineRunner{
 		SpringApplication.run(ProjetApplication.class, args);
 			
 	}
+	
 
 	@Override
 	public void run(String... args) throws Exception {
+		/*
 		User user1 = new User("flauzac","olivier","olivier@gmail.com","olivier","olivier","enseignant",false);
 		User user2 = new User("stefennel","angello","angello@gmail.com","angello","angello","enseignant",false);
 		User user3 = new User("bernard","thibaud","thibaud@gmail.com","thibaud","thibaud","enseignant",false);
@@ -102,8 +114,8 @@ public class ProjetApplication implements CommandLineRunner{
 		Question question8 = new Question( "question 8", "simple", 4,quizz3);
 		Question question9 = new Question( "question 9", "media", 5,quizz3);
 		
-		Indice indice1_7 = new Indice("indice 1 question 7", question7 );
-		Indice indice1_8 = new Indice("indice 1 question 8", question8 );
+		//Indice indice1_7 = new Indice("indice 1 question 7", question7 );
+		//Indice indice1_8 = new Indice("indice 1 question 8", question8 );
 		Indice indice1_9 = new Indice("indice 1 question 9", question9 );
 		
 		Question question10 = new Question("question 10", "media10", 5,quizz4);
@@ -130,8 +142,8 @@ public class ProjetApplication implements CommandLineRunner{
 		indiceDao.save(indice1_4);
 		indiceDao.save(indice1_5);
 		indiceDao.save(indice1_6);
-		indiceDao.save(indice1_7);
-		indiceDao.save(indice1_8);
+		//indiceDao.save(indice1_7);
+		//indiceDao.save(indice1_8);
 		indiceDao.save(indice1_9);
 		
 		
@@ -201,7 +213,7 @@ public class ProjetApplication implements CommandLineRunner{
 		repEleveDao.save(repE3_7);
 		repEleveDao.save(repE3_8);
 		repEleveDao.save(repE3_9);
-		
+		*/
 		
 		List<User> users = userDao.findAll();
 		users.forEach(u->System.out.println(u.getPseudo()));
@@ -209,5 +221,9 @@ public class ProjetApplication implements CommandLineRunner{
 		User user = userDao.findByPseudo("olivier");
 		System.err.println(user.getPseudo());
 		System.err.println(user.getEmail());
+		Quizz quizz = quizzDao.findById(7L).orElse(null);
+        System.err.println(quizz.getMatiere());
+        
+		System.err.println("SERVER LAUNCHED...");
 	}
 }

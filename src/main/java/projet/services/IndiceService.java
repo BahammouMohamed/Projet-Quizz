@@ -43,7 +43,7 @@ public class IndiceService {
     }
 
 	@RequestMapping(value="/indices/{id}",method=RequestMethod.DELETE)
-    public ResponseEntity<?> deleteQuizz(@PathVariable Long id) {
+    public ResponseEntity<?> deleteIndice(@PathVariable Long id) {
 		return indiceRepository.findById(id).map(indice -> {
 			indiceRepository.delete(indice);
 	        return ResponseEntity.ok().build();
@@ -52,7 +52,7 @@ public class IndiceService {
     }
 	
 	@RequestMapping(value="/indices/{id}",method=RequestMethod.PUT)
-    public Indice updateQuizz(@PathVariable Long id,@RequestBody Indice indice) {
+    public Indice updateIndice(@PathVariable Long id,@RequestBody Indice indice) {
 		return indiceRepository.findById(id).map(ind -> {
 			ind.setIndice(indice.getIndice());
 	        return indiceRepository.save(ind);

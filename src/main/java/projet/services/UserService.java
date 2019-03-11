@@ -66,6 +66,7 @@ public class UserService {
 			user.setPassword(userRequest.getPassword());
 			user.setEmail(userRequest.getEmail());
 			user.setStatus(userRequest.getStatus());
+			user.setValidated(false);
 	        return userRepository.save(user);
 	    }).orElseThrow(() -> new ResourceNotFoundException("UserID " + id + " not found"));
 

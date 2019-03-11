@@ -39,7 +39,7 @@ public class User implements Serializable{
 	@NotNull
 	@Column(unique=true ,length=50)
 	private String pseudo;
-	@Column(length=50)
+	@Column
 	private String password;
 	@Column(length=25)
 	private String status;
@@ -76,7 +76,7 @@ public class User implements Serializable{
 		this.prenom = prenom_user;
 		this.email = email_user;
 		this.pseudo = pseudo_user;
-		this.password = password;
+		this.password = password_user;
 		this.status = status;
 		this.validated = validated;
 	}
