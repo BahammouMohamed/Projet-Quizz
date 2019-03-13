@@ -1,5 +1,7 @@
 package projet.entities;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -21,10 +24,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
 @Entity
 @Table(name="users")
+
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_user")
+@Data @AllArgsConstructor @NoArgsConstructor
 public class User implements Serializable{
 	
 	@Id @GeneratedValue
@@ -39,12 +48,15 @@ public class User implements Serializable{
 	@NotNull
 	@Column(unique=true ,length=50)
 	private String pseudo;
-	@Column(length=50)
+	//@Column(length=50)
 	private String password;
 	@Column(length=25)
 	private String status;
 	@Column
 	private boolean validated;
+	
+	@ManyToMany(fetch=FetchType.EAGER)
+	private Collection<Role> roles=new ArrayList<>();
 	
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "user")
 	@JsonIgnore
@@ -61,7 +73,7 @@ public class User implements Serializable{
 	@OnDelete(action = OnDeleteAction.CASCADE) 
 	private Set<Score> scores =  new HashSet<Score>();
 	
-	
+
 	
 	
 	
@@ -70,15 +82,16 @@ public class User implements Serializable{
 	}
 	
 	public User(String nom_user, String prenom_user, String email_user, String pseudo_user, String password_user,
-			String status, boolean validated) {
+			String status, boolean validated, Collection<Role> roles) {
 		super();
 		this.nom = nom_user;
 		this.prenom = prenom_user;
 		this.email = email_user;
 		this.pseudo = pseudo_user;
-		this.password = password;
+		this.password = password_user;
 		this.status = status;
 		this.validated = validated;
+		this.roles=roles;
 	}
 
 	public Long getId() {
@@ -149,6 +162,15 @@ public class User implements Serializable{
 	public void setValidated(boolean validated) {
 		this.validated = validated;
 	}
+
+	public Collection<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Collection<Role> roles) {
+		this.roles = roles;
+	}
+	
 	
 	
 

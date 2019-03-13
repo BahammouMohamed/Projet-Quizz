@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import projet.dao.IndiceRepository;
 import projet.dao.QuestionRepository;
@@ -19,7 +21,9 @@ import projet.entities.Question;
 import projet.entities.Quizz;
 import projet.entities.Reponse;
 import projet.entities.ReponseEleve;
+import projet.entities.Role;
 import projet.entities.User;
+import projet.services.UserService;
 
 
 
@@ -37,29 +41,59 @@ public class ProjetApplication implements CommandLineRunner{
 	private ReponseEleveRepository repEleveDao ;
 	@Autowired
 	private ReponseRepository repDao ;
+	@Autowired
+	private UserService userService;
 	
 	
 	public static void main(String[] args) {
 		SpringApplication.run(ProjetApplication.class, args);
 			
 	}
+	
+	@Bean
+	public BCryptPasswordEncoder getBCPE() {
+		return new BCryptPasswordEncoder();
+	}
+
 
 	@Override
 	public void run(String... args) throws Exception {
-		User user1 = new User("flauzac","olivier","olivier@gmail.com","olivier","olivier","enseignant",false);
-		User user2 = new User("stefennel","angello","angello@gmail.com","angello","angello","enseignant",false);
-		User user3 = new User("bernard","thibaud","thibaud@gmail.com","thibaud","thibaud","enseignant",false);
 		
-		User eleve1 = new User("bahammou","mohamed","mohamed@gmail.com","mohamed123","mohamed123","eleve",false);
-		User eleve2 = new User("alla","reda","reda@gmail.com","reda","reda","eleve",false);
-		User eleve3 = new User("belghazi","zouhair","zouhair@gmail.com","zouhair","zouhair","eleve",false);
+		User user1 = new User("flauzac","olivier","olivier@gmail.com","olivier","olivier","enseignant",false,null);
+		User user2 = new User("stefennel","angello","angello@gmail.com","angello","angello","enseignant",false,null);
+		User user3 = new User("bernard","thibaud","thibaud@gmail.com","thibaud","thibaud","enseignant",false,null);
 		
-		userDao.save(user1);
+		User eleve1 = new User("bahammou","mohamed","mohamed@gmail.com","mohamed123","mohamed123","eleve",false,null);
+		User eleve2 = new User("alla","reda","reda@gmail.com","reda","reda","eleve",false,null);
+		User eleve3 = new User("belghazi","zouhair","zouhair@gmail.com","zouhair","zouhair","eleve",false,null);
+		
+		/*userDao.save(user1);
 		userDao.save(user2);
 		userDao.save(user3);
 		userDao.save(eleve1);
 		userDao.save(eleve2);
-		userDao.save(eleve3);
+		userDao.save(eleve3);*/
+		userService.createUser(user1);
+		userService.createUser(user2);
+		userService.createUser(user3);
+		userService.createUser(eleve1);
+		userService.createUser(eleve2);
+		userService.createUser(eleve3);
+		
+		userService.createRole(new Role(null,"ADMIN"));
+		userService.createRole(new Role(null,"ELEVE"));
+		userService.createRole(new Role(null,"ENSEIGNANT"));
+		
+		
+	userService.addRoleToUser("olivier", "ADMIN");
+		userService.addRoleToUser("angello", "ENSEIGNANT");
+		userService.addRoleToUser("thibaud", "ENSEIGNANT");
+		userService.addRoleToUser("mohamed123", "ELEVE");
+		userService.addRoleToUser("reda", "ELEVE");
+		userService.addRoleToUser("zouhair", "ELEVE");
+		
+		
+		
 		
 		
 				
