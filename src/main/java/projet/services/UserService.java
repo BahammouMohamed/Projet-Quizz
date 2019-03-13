@@ -94,6 +94,7 @@ public class UserService {
 			user.setPassword(hashPW);
 			user.setEmail(userRequest.getEmail());
 			user.setStatus(userRequest.getStatus());
+			user.setValidated(false);
 	        return userRepository.save(user);
 	    }).orElseThrow(() -> new ResourceNotFoundException("UserID " + id + " not found"));
 

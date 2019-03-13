@@ -26,9 +26,8 @@ import projet.entities.User;
 import projet.services.UserService;
 
 
-
 @SpringBootApplication
-public class ProjetApplication implements CommandLineRunner{
+public class ProjetApplication {
 	@Autowired
 	private UserRepository userDao ;
 	@Autowired
@@ -50,14 +49,19 @@ public class ProjetApplication implements CommandLineRunner{
 			
 	}
 	
+
 	@Bean
 	public BCryptPasswordEncoder getBCPE() {
 		return new BCryptPasswordEncoder();
 	}
 
 
+/*
 	@Override
 	public void run(String... args) throws Exception {
+
+		
+		
 		
 		User user1 = new User("flauzac","olivier","olivier@gmail.com","olivier","olivier","enseignant",false,null);
 		User user2 = new User("stefennel","angello","angello@gmail.com","angello","angello","enseignant",false,null);
@@ -67,12 +71,7 @@ public class ProjetApplication implements CommandLineRunner{
 		User eleve2 = new User("alla","reda","reda@gmail.com","reda","reda","eleve",false,null);
 		User eleve3 = new User("belghazi","zouhair","zouhair@gmail.com","zouhair","zouhair","eleve",false,null);
 		
-		/*userDao.save(user1);
-		userDao.save(user2);
-		userDao.save(user3);
-		userDao.save(eleve1);
-		userDao.save(eleve2);
-		userDao.save(eleve3);*/
+		
 		userService.createUser(user1);
 		userService.createUser(user2);
 		userService.createUser(user3);
@@ -136,8 +135,8 @@ public class ProjetApplication implements CommandLineRunner{
 		Question question8 = new Question( "question 8", "simple", 4,quizz3);
 		Question question9 = new Question( "question 9", "media", 5,quizz3);
 		
-		Indice indice1_7 = new Indice("indice 1 question 7", question7 );
-		Indice indice1_8 = new Indice("indice 1 question 8", question8 );
+		//Indice indice1_7 = new Indice("indice 1 question 7", question7 );
+		//Indice indice1_8 = new Indice("indice 1 question 8", question8 );
 		Indice indice1_9 = new Indice("indice 1 question 9", question9 );
 		
 		Question question10 = new Question("question 10", "media10", 5,quizz4);
@@ -164,8 +163,8 @@ public class ProjetApplication implements CommandLineRunner{
 		indiceDao.save(indice1_4);
 		indiceDao.save(indice1_5);
 		indiceDao.save(indice1_6);
-		indiceDao.save(indice1_7);
-		indiceDao.save(indice1_8);
+		//indiceDao.save(indice1_7);
+		//indiceDao.save(indice1_8);
 		indiceDao.save(indice1_9);
 		
 		
@@ -243,5 +242,9 @@ public class ProjetApplication implements CommandLineRunner{
 		User user = userDao.findByPseudo("olivier");
 		System.err.println(user.getPseudo());
 		System.err.println(user.getEmail());
-	}
+		Quizz quizz = quizzDao.findById(7L).orElse(null);
+        System.err.println(quizz.getMatiere());
+        
+		System.err.println("SERVER LAUNCHED...");
+	}*/
 }

@@ -48,11 +48,11 @@ public class QuestionService {
 
 	@RequestMapping(value="/questions/{id}",method=RequestMethod.DELETE)
     public ResponseEntity<?> deleteQuestions(@PathVariable Long id) {
-		System.err.println("DELETE question 1");
+		//System.err.println("DELETE question 1");
 		return questionRepository.findById(id).map(question -> {
-			System.err.println("DELETE question 2");
+			//System.err.println("DELETE question 2");
 			questionRepository.delete(question);
-			System.err.println("DELETE question 3");
+			//System.err.println("DELETE question 3");
 	        return ResponseEntity.ok().build();
 	    }).orElseThrow(() -> new ResourceNotFoundException("QuestionID " + id + " not found"));
 
@@ -99,6 +99,16 @@ public class QuestionService {
 	@RequestMapping(value="/questions/{id}/reponseseleve",method=RequestMethod.GET)
     public Set<ReponseEleve> getReponsesEleve(@PathVariable Long id) {
         return questionRepository.findById(id).get().getReponsesEleve();
+    }
+	
+	
+	public String getCorrectReponse(Long id) {
+		Question question = questionRepository.findById(id).get();
+		for (Reponse rep : question.getReponses()) {
+			if (rep.isCorrect())
+				return rep.getReponse();
+		}
+        return null;
     }
 	
 }

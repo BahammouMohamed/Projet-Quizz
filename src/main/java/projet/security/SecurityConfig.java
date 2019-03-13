@@ -35,6 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		 //http.formLogin();
 		 http.authorizeRequests().antMatchers("/login/**").permitAll();
 		 http.authorizeRequests().antMatchers("/users/**").hasAuthority("ADMIN").anyRequest().authenticated();
+		 //http.authorizeRequests().antMatchers("/quizzs/**").hasAuthority("ADMIN").anyRequest().authenticated();
 		 http.authorizeRequests().anyRequest().authenticated();
 		 http.addFilter(new JWTAuthenticationFilter(authenticationManager()));
 		 http.addFilterBefore(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
