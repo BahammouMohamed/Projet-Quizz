@@ -7,10 +7,10 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 @Configuration
 @EnableWebSocketMessageBroker
-public class WebSocketConfiguration extends AbstractWebSocketMessageBrokerConfigurer{
+public class WebSocketConfigurationV2 extends AbstractWebSocketMessageBrokerConfigurer{
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/socketCompetition")
+        registry.addEndpoint("/socketCompetition/V2","/socketSolo")
                 .setAllowedOrigins("*")
                 .withSockJS();
     }
@@ -18,7 +18,7 @@ public class WebSocketConfiguration extends AbstractWebSocketMessageBrokerConfig
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         registry.setApplicationDestinationPrefixes("/app")
-                .enableSimpleBroker("/competition");
+                .enableSimpleBroker("/competition/V2","/competition/V2/partie","/solo");
     }
     
     protected boolean sameOriginDisabled() {

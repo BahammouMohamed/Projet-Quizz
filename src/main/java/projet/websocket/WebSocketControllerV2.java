@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import org.json.JSONObject;
@@ -33,7 +34,7 @@ import projet.services.QuestionService;
 
 @CrossOrigin("*")
 @Controller
-public class WebSocketController {
+public class WebSocketControllerV2 {
 
     private final SimpMessagingTemplate template;
     @Autowired
@@ -51,60 +52,73 @@ public class WebSocketController {
     private Map<Long, LinkedList<Question>> mapQuizzs = new HashMap<>();
         
     @Autowired
-    WebSocketController(SimpMessagingTemplate template){
+    WebSocketControllerV2(SimpMessagingTemplate template){
         this.template = template;
     }
     
-    @MessageMapping("/load/quizz/{idQuizz}")
-    public void onLoadQuizz(String message , @DestinationVariable String idQuizz){
-    	  	
+    
+    @MessageMapping("/V2/new/quizz/{idQuizz}/{idUser}")
+    public void onNouveauQuizz(String message , @DestinationVariable String idQuizz, @DestinationVariable String idUser){
     	
+    	Random rand = new Random();
+    	int num = rand.nextInt(900000) + 100000;
     	
-        // ici récupérer le quizz 
-    	System.err.println("J'AI RECU UNE DEMANDE DE LOAD DU QUIZZ "+message+" : JE VAIS LOADER LE QUIZZ ICI");
+    	while (mapQuizzs.get(Long.parseLong(""+num)) != null) {
+    		rand = new Random();
+        	num = rand.nextInt(90000) + 10000;
+    	}
+    	System.out.println("onNouveauQuizz num = " + num);
     	Quizz qz = new Quizz();
-    	if (mapQuizzs.get(Long.parseLong(idQuizz)) == null)
+    	
+		qz =  quizzRepository.findById(Long.parseLong(idQuizz)).orElse(null);
+		if (qz != null) {
+			Set<Question> tmp = qz.getQuestions();
+			LinkedList<Question> llQuestions = new LinkedList<>();
+			for (Question question : tmp)
+				llQuestions.add(question);
+			
+			mapQuizzs.put(Long.parseLong(""+num), llQuestions);
+			
+        	this.template.convertAndSend("/competition/V2/"+idQuizz+"/"+idUser,  num);
+		}
+    	
+    }
+    
+    @MessageMapping("/V2/load/quizz/{idPartie}")
+    public void onLoadQuizz(String message , @DestinationVariable String idPartie){
+    	
+    	System.err.println("J'AI RECU UNE DEMANDE DE LOAD DU QUIZZ "+message+" : JE VAIS LOADER LE QUIZZ ICI");
+    	if (mapQuizzs.get(Long.parseLong(idPartie)) != null)
     	{
-    		qz =  quizzRepository.findById(Long.parseLong(idQuizz)).orElse(null);
-    		if (qz != null) {
-    			Set<Question> tmp = qz.getQuestions();
-    			LinkedList<Question> llQuestions = new LinkedList<>();
-    			for (Question question : tmp)
-    				llQuestions.add(question);
-    			
-    			mapQuizzs.put(Long.parseLong(idQuizz), llQuestions);
-    			
-    			Question questCourrante = mapQuizzs.get(Long.parseLong(idQuizz)).peek();
-            	
-            	String qst = questCourrante.getQuestion();
-            	System.err.println("onLoadQuizz ?????? Current Question = " + qst);
-            	JsonArray indArray = new JsonArray();
-            	JsonArray repArray = new JsonArray();
-            	        	
-            	for (Indice ind : questCourrante.getIndices()) 
-            		indArray.add(ind.getIndice());
-            	for (Reponse rep : questCourrante.getReponses())
-            		repArray.add(rep.getReponse());
-            	
-            	JSONObject objet = new JSONObject();
-            	objet.put("id_question", questCourrante.getId_question() );
-            	objet.put("question", qst);
-            	objet.put("indices", indArray);
-            	objet.put("reponses", repArray);
-            	Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            	String jsonString = gson.toJson(objet);
-            	
-            	// mapQuizzs.get(Long.parseLong(idQuizz)).remove();
-            	
-            	this.template.convertAndSend("/competition/"+idQuizz,  "load-disable");
-            	this.template.convertAndSend("/competition/"+idQuizz,  jsonString);
-    		}
+			Question questCourrante = mapQuizzs.get(Long.parseLong(idPartie)).peek();
+
+			String qst = questCourrante.getQuestion();
+			System.err.println("onLoadQuizz ?????? Current Question = " + qst);
+			JsonArray indArray = new JsonArray();
+			JsonArray repArray = new JsonArray();
+
+			for (Indice ind : questCourrante.getIndices())
+				indArray.add(ind.getIndice());
+			for (Reponse rep : questCourrante.getReponses())
+				repArray.add(rep.getReponse());
+
+			JSONObject objet = new JSONObject();
+			objet.put("id_question", questCourrante.getId_question());
+			objet.put("question", qst);
+			objet.put("indices", indArray);
+			objet.put("reponses", repArray);
+			Gson gson = new GsonBuilder().setPrettyPrinting().create();
+			String jsonString = gson.toJson(objet);
+
+			this.template.convertAndSend("/competition/V2/partie/" + idPartie, "load-disable");
+			this.template.convertAndSend("/competition/V2/partie/" + idPartie, jsonString);
+    		
     	}
     }
     
-    @MessageMapping("/{idQuizz}")
-    public void onReceivedMesage(String message, @DestinationVariable String idQuizz){
-    	Question questCourrante = mapQuizzs.get(Long.parseLong(idQuizz)).peek();
+    @MessageMapping("/V2/{idPartie}")
+    public void onReceivedMesage(String message, @DestinationVariable String idPartie){
+    	Question questCourrante = mapQuizzs.get(Long.parseLong(idPartie)).peek();
     	String repCorrect = questionService.getCorrectReponse(questCourrante.getId_question());
     	System.out.println("MESSAGE RECU : " + message+" REPONSE CORRECT = "+repCorrect);
     	
@@ -119,14 +133,14 @@ public class WebSocketController {
     	    	ReponseEleve repEle = new ReponseEleve(repEleve, userCourant, questCourrante,true);
     	    	repEleveRepository.save(repEle);
 				System.out.println("Current = " + questCourrante.getQuestion());
-				for(Iterator<Question> it=mapQuizzs.get(Long.parseLong(idQuizz)).iterator(); it.hasNext(); ) {
+				for(Iterator<Question> it=mapQuizzs.get(Long.parseLong(idPartie)).iterator(); it.hasNext(); ) {
 				    if(it.next().getId_question()==questCourrante.getId_question()) { 
 				        it.remove(); 
 				        break;
 				        }
 				    }
-				if (mapQuizzs.get(Long.parseLong(idQuizz)).size()>0) {
-					questCourrante = mapQuizzs.get(Long.parseLong(idQuizz)).peek();
+				if (mapQuizzs.get(Long.parseLong(idPartie)).size()>0) {
+					questCourrante = mapQuizzs.get(Long.parseLong(idPartie)).peek();
     	    		String qst = questCourrante.getQuestion();
     	    		System.out.println("Next = " + qst);
                 	JsonArray indArray = new JsonArray();
@@ -145,16 +159,16 @@ public class WebSocketController {
                 	Gson gson = new GsonBuilder().setPrettyPrinting().create();
                 	String jsonString = gson.toJson(objet);
                 	
-    	        	this.template.convertAndSend("/competition/"+idQuizz,  jsonString);
+    	        	this.template.convertAndSend("/competition/V2/partie/"+idPartie,  jsonString);
 				} else {
 		    		System.err.println("**********************************");
 		    		System.err.println("************FIN DU QUIZZ**********");
 		    		System.err.println("**********************************");
-		    		this.template.convertAndSend("/competition/"+idQuizz,  "fin-quizz");
+		    		this.template.convertAndSend("/competition/V2/partie/"+idPartie,  "fin-quizz");
 		    	}
     				
 			} else {
-    			this.template.convertAndSend("/competition/"+idQuizz,  "mauvaise-reponse");
+    			this.template.convertAndSend("/competition/V2/partie/"+idPartie,  "mauvaise-reponse");
     		}
     	} 
 	}	
