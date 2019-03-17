@@ -5,6 +5,7 @@ import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+@SuppressWarnings("deprecation")
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfigurationV2 extends AbstractWebSocketMessageBrokerConfigurer{

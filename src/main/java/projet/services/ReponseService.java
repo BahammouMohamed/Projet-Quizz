@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import projet.dao.IndiceRepository;
 import projet.dao.ReponseRepository;
-import projet.entities.Indice;
 import projet.entities.Question;
 import projet.entities.Quizz;
 import projet.entities.Reponse;

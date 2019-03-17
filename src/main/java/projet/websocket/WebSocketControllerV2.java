@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 
 import projet.dao.QuizzRepository;
 import projet.dao.ReponseEleveRepository;
@@ -161,9 +159,8 @@ public class WebSocketControllerV2 {
                 	
     	        	this.template.convertAndSend("/competition/V2/partie/"+idPartie,  jsonString);
 				} else {
-		    		System.err.println("**********************************");
 		    		System.err.println("************FIN DU QUIZZ**********");
-		    		System.err.println("**********************************");
+		    		mapQuizzs.remove(Long.parseLong(idPartie));
 		    		this.template.convertAndSend("/competition/V2/partie/"+idPartie,  "fin-quizz");
 		    	}
     				

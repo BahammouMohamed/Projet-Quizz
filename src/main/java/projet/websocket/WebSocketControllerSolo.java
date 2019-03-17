@@ -59,9 +59,6 @@ public class WebSocketControllerSolo {
     	System.err.println("SOLO LOAD QUIZZ "+idQuizz+" USER: "+idUser);
     	
     	if (mapQuizzs.get(Long.parseLong(idUser)) == null) {
-    		
-    		//préparation du quizz et envoi de la première question
-    	
     		Quizz qz = new Quizz();
         	
     		qz =  quizzRepository.findById(Long.parseLong(idQuizz)).orElse(null);
@@ -145,13 +142,14 @@ public class WebSocketControllerSolo {
 			this.template.convertAndSend("/solo/" + idUserParam, jsonString);
 		} else {
 			System.err.println("************FIN DU QUIZZ**********");
+			mapQuizzs.remove(Long.parseLong(idUserParam));
 			this.template.convertAndSend("/solo/" + idUserParam, "fin-quizz");
 		}
 
 	}
     
     @MessageMapping("/solo/{idUserParam}")
-    public void onReceivedMesage(String message, @DestinationVariable String idUserParam){
+    public void onReponse(String message, @DestinationVariable String idUserParam){
 		Question questCourrante = mapQuizzs.get(Long.parseLong(idUserParam)).peek();
 		String repCorrect = questionService.getCorrectReponse(questCourrante.getId_question());
 		System.out.println("COURANT MESSAGE RECU : " + message + " REPONSE CORRECT = " + repCorrect);
@@ -196,6 +194,7 @@ public class WebSocketControllerSolo {
 					this.template.convertAndSend("/solo/" + idUserParam, jsonString);
 				} else {
 					System.err.println("************FIN DU QUIZZ**********");
+					mapQuizzs.remove(Long.parseLong(idUserParam));
 					this.template.convertAndSend("/solo/" + idUserParam, "fin-quizz");
 				}
 			} else {

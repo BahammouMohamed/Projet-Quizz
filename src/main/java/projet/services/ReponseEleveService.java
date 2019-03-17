@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import projet.dao.ReponseEleveRepository;
-import projet.entities.Indice;
 import projet.entities.Question;
-import projet.entities.Quizz;
 import projet.entities.ReponseEleve;
 import projet.entities.User;
 import projet.exceptions.ResourceNotFoundException;
