@@ -3,6 +3,7 @@ package projet.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,9 +23,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	@Autowired
 	protected void globalConfig(AuthenticationManagerBuilder auth) throws Exception{
-	
 		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
-				
 	}
 	
 	@Override
@@ -32,21 +31,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 		 http.csrf().disable();
 		 http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		 //http.formLogin();
 		 http.authorizeRequests().antMatchers("/socketCompetition/**").permitAll();
 		 http.authorizeRequests().antMatchers("/socketSolo/**").permitAll();
 
-		http.authorizeRequests().antMatchers("/login/**").permitAll();
-		http.authorizeRequests().antMatchers("/users/username/**").permitAll();
+		 http.authorizeRequests().antMatchers("/login/**").permitAll();
+		 http.authorizeRequests().antMatchers("/users/username/**").permitAll();
 		 http.authorizeRequests().antMatchers("/users/**").permitAll();
-		 //http.authorizeRequests().antMatchers("/users/**").hasAuthority("ADMIN").anyRequest().authenticated();
-		 //http.authorizeRequests().antMatchers("/quizzs/**").hasAuthority("ADMIN").anyRequest().authenticated();
-		 http.authorizeRequests().anyRequest().authenticated();
+		 http.authorizeRequests().antMatchers("/inscription/**").permitAll();
+		 http.authorizeRequests().antMatchers("/quizzs").hasAuthority("ENSEIGNANT").anyRequest().authenticated();
+		 http.authorizeRequests().antMatchers("/quizzs/**").hasAuthority("ELEVE").antMatchers(HttpMethod.GET).authenticated();
+		 
 		 http.addFilter(new JWTAuthenticationFilter(authenticationManager()));
 		 http.addFilterBefore(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
-            
+       
 	}
 	
-	
-
 }

@@ -30,11 +30,8 @@ import projet.exceptions.ResourceNotFoundException;
 @CrossOrigin("*")
 @Service
 @Transactional
-
 public class UserService {
 
-	
-	
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
@@ -53,7 +50,6 @@ public class UserService {
     public User getUser(@PathVariable Long id) {
 		User user = new User();
 		user = userRepository.findById(id).orElse(null);
-		//user.setPassword("");
         return user;
     }
 	
@@ -61,12 +57,10 @@ public class UserService {
     public User getUserByPseudo(@PathVariable String pseudo) {
 		User user = new User();
 		user = userRepository.findByPseudo(pseudo);
-		//user.setPassword("");
         return user;
     }
-	
-	
-    public User createUser( User user) throws Exception{
+	@RequestMapping(value="/inscription",method=RequestMethod.POST)
+	public User inscription( @RequestBody User user) throws Exception{
 		User usertmp = userRepository.findByPseudo(user.getPseudo());
 		if(usertmp!=null)
 			throw new Exception("Pseudo existe déja");
@@ -79,7 +73,28 @@ public class UserService {
 		}catch (Exception e) {
 			System.err.println("************************"+e+"****************************");
 		}
-		//this.addRoleToUser(user.getPseudo(), user.getStatus().toUpperCase());
+		usertmp = userRepository.save(user);
+		
+		this.addRoleToUser(usertmp.getPseudo(), usertmp.getStatus().toUpperCase());
+		
+		return usertmp;
+    }
+    
+	
+	
+	public User createUser( User user) throws Exception{
+		User usertmp = userRepository.findByPseudo(user.getPseudo());
+		if(usertmp!=null)
+			throw new Exception("Pseudo existe déja");
+		usertmp = userRepository.findByEmail(user.getEmail());
+		if(usertmp != null)
+			throw new Exception("Email existe déja");
+		try {
+		String hashPW=bCryptPasswordEncoder.encode(user.getPassword());
+		user.setPassword(hashPW);
+		}catch (Exception e) {
+			System.err.println("************************"+e+"****************************");
+		}
 		
 		return userRepository.save(user);
     }
