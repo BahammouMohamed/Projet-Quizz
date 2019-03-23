@@ -15,20 +15,13 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity 
 @Table(name="reponses")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_reponse")
 public class Reponse implements Serializable{
 	
 	@Id @GeneratedValue
@@ -97,8 +90,6 @@ public class Reponse implements Serializable{
 		this.date_creation_reponse = date_creation_reponse;
 	}
 	
-	
-
 	public Date getDate_update_reponse() {
 		return date_update_reponse;
 	}
@@ -115,8 +106,4 @@ public class Reponse implements Serializable{
 		this.question = question;
 	}
 	
-	
-	
-	
-
 }

@@ -74,8 +74,4 @@ public class IndiceService {
         return indiceRepository.findById(id).get().getQuestion().getQuizz().getUser();
     }
 	
-	
-	
-	
-	
 }

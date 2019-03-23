@@ -60,8 +60,6 @@ public class QuizzService {
 			qui.setPeriode(quizz.getPeriode());
 	        return quizzRepository.save(qui);
 	    }).orElseThrow(() -> new ResourceNotFoundException("QuizzID " + id + " not found"));
-		
-	   
     }
 	
 	@RequestMapping(value="/quizzs/{id}/questions",method=RequestMethod.GET)

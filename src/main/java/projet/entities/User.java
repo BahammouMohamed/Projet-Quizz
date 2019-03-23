@@ -71,9 +71,6 @@ public class User implements Serializable{
 	@OnDelete(action = OnDeleteAction.CASCADE) 
 	private Set<Score> scores =  new HashSet<Score>();
 	
-
-	
-	
 	
 	public User() {
 		super();
@@ -169,7 +166,4 @@ public class User implements Serializable{
 		this.roles = roles;
 	}
 	
-	
-	
-
 }

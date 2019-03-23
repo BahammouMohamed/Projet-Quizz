@@ -68,7 +68,4 @@ public class ReponseEleveService {
         return repEleRepository.findById(id).get().getUser();
     }
 	
-	
-	
-	
 }

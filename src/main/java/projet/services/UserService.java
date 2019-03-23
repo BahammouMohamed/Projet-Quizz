@@ -74,9 +74,7 @@ public class UserService {
 			System.err.println("************************"+e+"****************************");
 		}
 		usertmp = userRepository.save(user);
-		
 		this.addRoleToUser(usertmp.getPseudo(), usertmp.getStatus().toUpperCase());
-		
 		return usertmp;
     }
     
@@ -95,7 +93,6 @@ public class UserService {
 		}catch (Exception e) {
 			System.err.println("************************"+e+"****************************");
 		}
-		
 		return userRepository.save(user);
     }
 

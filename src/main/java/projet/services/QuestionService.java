@@ -67,10 +67,7 @@ public class QuestionService {
 			quest.setPoints(question.getPoints());
 			return questionRepository.save(quest);
 	    }).orElseThrow(() -> new ResourceNotFoundException("QuestionID " + id + " not found"));
-		
-	   
     }
-	
 	@RequestMapping(value="/questions/{id}/quizz",method=RequestMethod.GET)
     public Quizz getQuizz(@PathVariable Long id) {
         return questionRepository.findById(id).get().getQuizz();
@@ -100,7 +97,6 @@ public class QuestionService {
     public Set<ReponseEleve> getReponsesEleve(@PathVariable Long id) {
         return questionRepository.findById(id).get().getReponsesEleve();
     }
-	
 	
 	public String getCorrectReponse(Long id) {
 		Question question = questionRepository.findById(id).get();

@@ -75,8 +75,4 @@ public class MediaService {
         return mediaRepository.findById(id).get().getQuestion().getQuizz().getUser();
     }
 	
-	
-	
-	
-	
 }

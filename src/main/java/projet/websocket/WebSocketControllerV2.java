@@ -79,19 +79,16 @@ public class WebSocketControllerV2 {
 			
         	this.template.convertAndSend("/competition/V2/"+idQuizz+"/"+idUser,  num);
 		}
-    	
     }
     
     @MessageMapping("/V2/load/quizz/{idPartie}")
     public void onLoadQuizz(String message , @DestinationVariable String idPartie){
     	
-    	System.err.println("J'AI RECU UNE DEMANDE DE LOAD DU QUIZZ "+message+" : JE VAIS LOADER LE QUIZZ ICI");
     	if (mapQuizzs.get(Long.parseLong(idPartie)) != null)
     	{
 			Question questCourrante = mapQuizzs.get(Long.parseLong(idPartie)).peek();
 
 			String qst = questCourrante.getQuestion();
-			System.err.println("onLoadQuizz ?????? Current Question = " + qst);
 			JsonArray indArray = new JsonArray();
 			JsonArray repArray = new JsonArray();
 
@@ -118,7 +115,6 @@ public class WebSocketControllerV2 {
     public void onReceivedMesage(String message, @DestinationVariable String idPartie){
     	Question questCourrante = mapQuizzs.get(Long.parseLong(idPartie)).peek();
     	String repCorrect = questionService.getCorrectReponse(questCourrante.getId_question());
-    	System.out.println("MESSAGE RECU : " + message+" REPONSE CORRECT = "+repCorrect);
     	
     	JSONObject jsonObj = new JSONObject(message);
     	String repEleve = (String) jsonObj.get("reponse_eleve");
@@ -126,7 +122,6 @@ public class WebSocketControllerV2 {
     	
     	if(repCorrect != null) {
     		if (repEleve.equals(repCorrect)) {
-    			   	    	
     	    	User userCourant = userRepository.findById(idUser).get();
     	    	ReponseEleve repEle = new ReponseEleve(repEleve, userCourant, questCourrante,true);
     	    	repEleveRepository.save(repEle);

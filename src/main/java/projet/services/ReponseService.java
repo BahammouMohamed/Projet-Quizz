@@ -75,8 +75,4 @@ public class ReponseService {
         return reponseRepository.findById(id).get().getQuestion().getQuizz().getUser();
     }
 	
-	
-	
-	
-	
 }

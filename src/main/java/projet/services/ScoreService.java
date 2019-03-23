@@ -68,10 +68,4 @@ public class ScoreService {
         return scoreRepository.findById(id).get().getQuizz();
     }
 	
-	
-	
-	
-	
-	
-	
 }

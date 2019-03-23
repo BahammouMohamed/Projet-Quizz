@@ -56,8 +56,6 @@ public class WebSocketControllerSolo {
     @MessageMapping("/solo/load/quizz/{idQuizz}/{idUser}")
     public void onLoadQuizz(String message , @DestinationVariable String idQuizz, @DestinationVariable String idUser){
     	
-    	System.err.println("SOLO LOAD QUIZZ "+idQuizz+" USER: "+idUser);
-    	
     	if (mapQuizzs.get(Long.parseLong(idUser)) == null) {
     		Quizz qz = new Quizz();
         	
@@ -73,7 +71,6 @@ public class WebSocketControllerSolo {
     			Question questCourrante = mapQuizzs.get(Long.parseLong(idUser)).peek();
 
     			String qst = questCourrante.getQuestion();
-    			System.err.println("onLoadQuizz ?????? Current Question = " + qst);
     			JsonArray indArray = new JsonArray();
     			JsonArray repArray = new JsonArray();
 
@@ -94,7 +91,6 @@ public class WebSocketControllerSolo {
     			this.template.convertAndSend("/solo/" + idUser, jsonString);
     		}
     	}else {
-    		System.out.println("QUIZZ EXISTE DEJA");
     		this.template.convertAndSend("/solo/" + idUser, "erreur");
     	}
     }
@@ -103,8 +99,7 @@ public class WebSocketControllerSolo {
     public void onIgnore(String message, @DestinationVariable String idUserParam){
 		Question questCourrante = mapQuizzs.get(Long.parseLong(idUserParam)).peek();
 		String repCorrect = questionService.getCorrectReponse(questCourrante.getId_question());
-		System.out.println("IGNORER MESSAGE RECU : " + message + " REPONSE CORRECT = " + repCorrect);
-
+		
 		JSONObject jsonObj = new JSONObject(message);
 		String repEleve = (String) jsonObj.get("reponse_eleve");
 		Long idUser = Long.parseLong(jsonObj.get("user").toString());
@@ -122,7 +117,6 @@ public class WebSocketControllerSolo {
 		if (mapQuizzs.get(Long.parseLong(idUserParam)).size() > 0) {
 			questCourrante = mapQuizzs.get(Long.parseLong(idUserParam)).peek();
 			String qst = questCourrante.getQuestion();
-			System.out.println("Next ignore = " + qst);
 			JsonArray indArray = new JsonArray();
 			JsonArray repArray = new JsonArray();
 
@@ -152,8 +146,6 @@ public class WebSocketControllerSolo {
     public void onReponse(String message, @DestinationVariable String idUserParam){
 		Question questCourrante = mapQuizzs.get(Long.parseLong(idUserParam)).peek();
 		String repCorrect = questionService.getCorrectReponse(questCourrante.getId_question());
-		System.out.println("COURANT MESSAGE RECU : " + message + " REPONSE CORRECT = " + repCorrect);
-
 		JSONObject jsonObj = new JSONObject(message);
 		String repEleve = (String) jsonObj.get("reponse_eleve");
 		Long idUser = Long.parseLong(idUserParam);
@@ -164,7 +156,6 @@ public class WebSocketControllerSolo {
 				User userCourant = userRepository.findById(idUser).get();
 				ReponseEleve repEle = new ReponseEleve(repEleve, userCourant, questCourrante, true);
 				repEleveRepository.save(repEle);
-				System.out.println("Current normal = " + questCourrante.getQuestion());
 				for (Iterator<Question> it = mapQuizzs.get(Long.parseLong(idUserParam)).iterator(); it.hasNext();) {
 					if (it.next().getId_question() == questCourrante.getId_question()) {
 						it.remove();
@@ -174,7 +165,6 @@ public class WebSocketControllerSolo {
 				if (mapQuizzs.get(Long.parseLong(idUserParam)).size() > 0) {
 					questCourrante = mapQuizzs.get(Long.parseLong(idUserParam)).peek();
 					String qst = questCourrante.getQuestion();
-					System.out.println("Next normal = " + qst);
 					JsonArray indArray = new JsonArray();
 					JsonArray repArray = new JsonArray();
 
@@ -202,8 +192,6 @@ public class WebSocketControllerSolo {
 			}
 		}
 	}
-    
-    
     
 }
 

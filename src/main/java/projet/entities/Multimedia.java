@@ -15,20 +15,13 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name="multimedias")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_media")
 public class Multimedia implements Serializable{
 	
 	@Id @GeneratedValue
@@ -52,8 +45,6 @@ public class Multimedia implements Serializable{
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_question", nullable = false)
 	private Question question;
-	
-	
 	
 	public Multimedia() {
 		super();
@@ -82,8 +73,6 @@ public class Multimedia implements Serializable{
 		return type_media;
 	}
 	
-	
-
 	public Date getDate_update_media() {
 		return date_update_media;
 	}
@@ -115,21 +104,5 @@ public class Multimedia implements Serializable{
 	public void setQuestion(Question question) {
 		this.question = question;
 	}
-
-	
-	
-	
-
-
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 }

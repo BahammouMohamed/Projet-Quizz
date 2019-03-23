@@ -1,13 +1,10 @@
 package projet.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,23 +17,17 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name="quizzs")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_quizz")
 public class Quizz  implements Serializable{
 
 	@Id @GeneratedValue
@@ -67,9 +58,6 @@ public class Quizz  implements Serializable{
     @JoinColumn(name = "id_user", nullable = false)
     private User user;
 	
-	
-	
-
 	public Quizz(String niveau, String matiere, String periode, User user) {
 		super();
 		this.niveau = niveau;
@@ -78,13 +66,9 @@ public class Quizz  implements Serializable{
 		this.user = user;
 	}
 
-
-
-
 	public Quizz() {
 		super();
 	}
-
 
 	public Long getId_quizz() {
 		return id_quizz;
@@ -117,50 +101,27 @@ public class Quizz  implements Serializable{
 		this.date_creation_quizz = date_creation_quizz;
 	}
 	
-
 	public Date getDate_update_quizz() {
 		return date_update_quizz;
 	}
 
-
-
-
 	public void setDate_update_quizz(Date date_update_quizz) {
 		this.date_update_quizz = date_update_quizz;
 	}
-
-
-
-
 	public Set<Question> getQuestions() {
 		return  questions;
 	}
-
 
 	public void setQuestions(Set<Question> questions) {
 		this.questions = questions;
 	}
 
-
-
-
 	public User getUser() {
 		return user;
 	}
-
-
-
 
 	public void setUser(User user) {
 		this.user = user;
 	}
 
-
-	
-	
-	
-	
-	
-	
-	
 }

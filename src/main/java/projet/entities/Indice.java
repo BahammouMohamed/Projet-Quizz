@@ -17,15 +17,11 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name="indices")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_indice")
 public class Indice implements Serializable{
 	@Id @GeneratedValue
 	private Long id_indice;
@@ -46,9 +42,6 @@ public class Indice implements Serializable{
     @JoinColumn(name = "id_question", nullable = false)
 	private Question question;
 	
-	
-	
-	
 	public Indice(String indice) {
 		super();
 		this.indice = indice;
@@ -58,9 +51,6 @@ public class Indice implements Serializable{
 		super();
 	}
 	
-
-	
-
 	public Indice(String indice, Question question) {
 		super();
 		this.indice = indice;
@@ -108,13 +98,4 @@ public class Indice implements Serializable{
 		this.question = question;
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
