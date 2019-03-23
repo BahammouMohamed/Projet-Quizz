@@ -31,13 +31,14 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 		
 		response.addHeader("Access-Control-Allow-Origin", "http://localhost:4200");
 		response.addHeader("Access-Control-Allow-Credentials", "true");
+		response.addHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE, PATCH");
 		response.addHeader("Access-Control-Allow-Headers",
 				"Origin, Accept, X-Requested-With,"+
 				" Content-Type, Access-Control-Request-Method,"+
 				"Access-Control-Request-Headers, Authorization");
 		
 		response.addHeader("Access-Control-Expose-Headers","Access-Control-Allow-Origin,"+
-				"Access-Control-Allow-Credentials, Authorization");
+				"Access-Control-Allow-Credentials, Authorization, Access-Control-Allow-Methods");
 		
 		String jwt=request.getHeader(SecurityConstants.HEADER_STRING);
 		

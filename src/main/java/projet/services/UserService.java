@@ -103,6 +103,15 @@ public class UserService {
 
     }
 	
+	@RequestMapping(value="/users/{id}/validate",method=RequestMethod.GET)
+    public User validateUser(@PathVariable Long id) {
+		return userRepository.findById(id).map(user -> {
+			user.setValidated(true);
+	        return userRepository.save(user);
+	    }).orElseThrow(() -> new ResourceNotFoundException("UserID " + id + " not found"));
+
+    }
+	
 	@RequestMapping(value="/users/{id}/quizzs",method=RequestMethod.GET)
     public Set<Quizz> getQuizzs(@PathVariable Long id) {
         return userRepository.findById(id).get().getQuizzs();
