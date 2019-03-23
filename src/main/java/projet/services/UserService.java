@@ -53,11 +53,17 @@ public class UserService {
     public User getUser(@PathVariable Long id) {
 		User user = new User();
 		user = userRepository.findById(id).orElse(null);
-		user.setPassword("");
+		//user.setPassword("");
         return user;
     }
 	
-
+	@RequestMapping(value="/users/username/{pseudo}",method=RequestMethod.GET)
+    public User getUserByPseudo(@PathVariable String pseudo) {
+		User user = new User();
+		user = userRepository.findByPseudo(pseudo);
+		//user.setPassword("");
+        return user;
+    }
 	
 	
     public User createUser( User user) throws Exception{

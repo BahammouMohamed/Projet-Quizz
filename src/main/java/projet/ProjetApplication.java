@@ -27,7 +27,7 @@ import projet.services.UserService;
 
 
 @SpringBootApplication
-public class ProjetApplication {
+public class ProjetApplication implements CommandLineRunner {
 	@Autowired
 	private UserRepository userDao ;
 	@Autowired
@@ -47,6 +47,7 @@ public class ProjetApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ProjetApplication.class, args);
 		System.err.println("SERVER STARTED...");
+		
 	}
 	
 
@@ -54,10 +55,16 @@ public class ProjetApplication {
 	public BCryptPasswordEncoder getBCPE() {
 		return new BCryptPasswordEncoder();
 	}
-
-
-/*
+	
 	@Override
+	public void run(String... args) throws Exception {
+		
+		User user = userService.findUserByPseudo("reda");
+		System.err.println(user.getPseudo());
+	}
+
+
+	/*@Override
 	public void run(String... args) throws Exception {
 
 		
@@ -247,4 +254,6 @@ public class ProjetApplication {
         
 		System.err.println("SERVER LAUNCHED...");
 	}*/
+	
+	
 }
