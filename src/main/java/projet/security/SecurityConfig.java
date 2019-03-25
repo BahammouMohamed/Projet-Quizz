@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		 http.authorizeRequests().antMatchers("/users/**").permitAll();
 		 http.authorizeRequests().antMatchers("/inscription/**").permitAll();
 		 http.authorizeRequests().antMatchers("/quizzs").hasAuthority("ENSEIGNANT").anyRequest().authenticated();
-		 http.authorizeRequests().antMatchers("/quizzs/**").hasAuthority("ELEVE").antMatchers(HttpMethod.GET).authenticated();
+		 http.authorizeRequests().antMatchers("/quizzs").hasAuthority("ELEVE").antMatchers(HttpMethod.GET).authenticated();
 		 
 		 http.addFilter(new JWTAuthenticationFilter(authenticationManager()));
 		 http.addFilterBefore(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);

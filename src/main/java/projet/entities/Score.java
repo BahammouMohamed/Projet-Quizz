@@ -23,6 +23,9 @@ public class Score implements Serializable{
 	@Column
 	private Integer score;
 	
+	@Column
+	private Long idPartie;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user", nullable = false)
 	private User user;

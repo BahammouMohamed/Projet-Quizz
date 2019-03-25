@@ -123,7 +123,7 @@ public class WebSocketControllerV2 {
     	if(repCorrect != null) {
     		if (repEleve.equals(repCorrect)) {
     	    	User userCourant = userRepository.findById(idUser).get();
-    	    	ReponseEleve repEle = new ReponseEleve(repEleve, userCourant, questCourrante,true);
+    	    	ReponseEleve repEle = new ReponseEleve(repEleve, userCourant, questCourrante,true,Long.parseLong(idPartie));
     	    	repEleveRepository.save(repEle);
 				System.out.println("Current = " + questCourrante.getQuestion());
 				for(Iterator<Question> it=mapQuizzs.get(Long.parseLong(idPartie)).iterator(); it.hasNext(); ) {

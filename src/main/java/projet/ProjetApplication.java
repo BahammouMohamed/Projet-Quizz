@@ -91,7 +91,7 @@ public class ProjetApplication implements CommandLineRunner {
 		userService.createRole(new Role(null,"ENSEIGNANT"));
 		
 		
-	userService.addRoleToUser("olivier", "ADMIN");
+		userService.addRoleToUser("olivier", "ADMIN");
 		userService.addRoleToUser("angello", "ENSEIGNANT");
 		userService.addRoleToUser("thibaud", "ENSEIGNANT");
 		userService.addRoleToUser("mohamed123", "ELEVE");

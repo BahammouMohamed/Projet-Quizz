@@ -1,8 +1,12 @@
 package projet.services;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,9 +19,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+
 import projet.dao.RoleRepository;
 import projet.dao.UserRepository;
+import projet.entities.Indice;
 import projet.entities.Quizz;
+import projet.entities.Reponse;
 import projet.entities.ReponseEleve;
 import projet.entities.Role;
 import projet.entities.Score;
@@ -139,6 +149,94 @@ public class UserService {
     public Set<ReponseEleve> getReponsesEleve(@PathVariable Long id) {
         return userRepository.findById(id).get().getReponses();
     }
+	
+	@RequestMapping(value="/users/{id}/mesquizzs",method=RequestMethod.GET)
+    public List<String> getMesQuizz(@PathVariable Long id) {
+		List<Quizz> listQuizzs = new ArrayList<Quizz>();
+		List<String> jsonStrings = new ArrayList<String>();
+		
+		Set<ReponseEleve> reponses = userRepository.findById(id).get().getReponses();
+		
+		Map<Long, List<ReponseEleve>> stream = reponses.stream().collect(
+                Collectors.groupingBy(ReponseEleve::getIdPartie));
+		
+		for (Long element : stream.keySet()) {
+			listQuizzs.add(stream.get(element).get(0).getQuestion().getQuizz());
+			JSONObject objet = new JSONObject();
+			Gson gson = new GsonBuilder().create();
+			
+			objet.put("idPartie",element );
+			objet.put("idQuizz",stream.get(element).get(0).getQuestion().getQuizz().getId_quizz() );
+			objet.put("niveau",stream.get(element).get(0).getQuestion().getQuizz().getNiveau() );
+			objet.put("matiere",stream.get(element).get(0).getQuestion().getQuizz().getMatiere() );
+			objet.put("periode",stream.get(element).get(0).getQuestion().getQuizz().getPeriode() );
+			
+			jsonStrings.add(gson.toJson(objet));
+		}
+		System.out.println(jsonStrings);
+		return jsonStrings;
+    }
+	
+	
+	
+	@RequestMapping(value="/users/{id}/mesreponses/{idPartie}",method=RequestMethod.GET)
+    public List<String> getQuizzByPartie(@PathVariable Long id,@PathVariable Long idPartie) {
+		List<Quizz> listQuizzs = new ArrayList<Quizz>();
+		List<String> jsonStrings = new ArrayList<String>();
+		
+		Set<ReponseEleve> reponses = userRepository.findById(id).get().getReponses();
+		
+		List<ReponseEleve> stream = reponses.stream().filter(x -> x.getIdPartie().equals(idPartie))
+				.collect( Collectors.toList() );
+		
+		for (ReponseEleve element : stream) {
+			JSONObject objet = new JSONObject();
+			Gson gson = new GsonBuilder().create();
+			
+			objet.put("question",element.getQuestion().getQuestion() );
+			objet.put("reponse", element.getReponse_eleve() );
+			objet.put("isCorrect", element.isCorrect() );
+			
+			if (element.isCorrect())
+				objet.put("points", element.getQuestion().getPoints() );
+			else
+				objet.put("points", 0 );
+				
+			jsonStrings.add(gson.toJson(objet));
+		}
+        System.out.println(jsonStrings);
+		return jsonStrings;
+    }
+	
+	@RequestMapping(value="/users/{id}/monscore/{idPartie}",method=RequestMethod.GET)
+    public String getMonScore(@PathVariable Long id,@PathVariable Long idPartie) {
+				
+		Set<ReponseEleve> reponses = userRepository.findById(id).get().getReponses();
+		
+		List<ReponseEleve> stream = reponses.stream().filter(x -> x.getIdPartie().equals(idPartie))
+				.collect( Collectors.toList() );
+		
+		JSONObject objet = new JSONObject();
+		Gson gson = new GsonBuilder().create();
+		
+		Integer somme  = stream.stream().filter(correct -> correct.isCorrect())
+				.map(x -> x.getQuestion().getPoints())
+				.reduce(0, (x,y) -> x+y);
+		
+		Integer max  = stream.stream()
+				.map(x -> x.getQuestion().getPoints())
+				.reduce(0, (x,y) -> x+y);
+		
+		objet.put("score", somme);
+		objet.put("scoreMax", max);
+		
+		String jsonString = gson.toJson(objet);
+		System.out.println("SCORE = " + somme + " MAX = " + max + " STRING = "+ jsonString);
+		return jsonString;
+    }
+	
+	
+	
 	
 	@RequestMapping(value="/users/{id}/scores",method=RequestMethod.GET)
     public Set<Score> getScores(@PathVariable Long id) {

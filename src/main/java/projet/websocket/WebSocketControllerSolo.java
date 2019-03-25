@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import org.json.JSONObject;
@@ -47,16 +48,31 @@ public class WebSocketControllerSolo {
     private ReponseEleveRepository repEleveRepository;
     
     private Map<Long, LinkedList<Question>> mapQuizzs = new HashMap<>();
+    private Map<Long, Long> mapParties = new HashMap<>();
         
     @Autowired
     WebSocketControllerSolo(SimpMessagingTemplate template){
         this.template = template;
     }
     
+    
+        
     @MessageMapping("/solo/load/quizz/{idQuizz}/{idUser}")
     public void onLoadQuizz(String message , @DestinationVariable String idQuizz, @DestinationVariable String idUser){
     	
+    	
     	if (mapQuizzs.get(Long.parseLong(idUser)) == null) {
+    		
+    		Random rand = new Random();
+        	int num = rand.nextInt(900000) + 100000;
+        	
+        	while ( mapParties.containsValue(Long.parseLong(""+num) ) ) {
+        		rand = new Random();
+            	num = rand.nextInt(900000) + 100000;
+        	}
+        	mapParties.put(Long.parseLong(idUser), Long.parseLong(""+num));
+        	System.out.println("LoadQuizz SOLO idPartie = " + num);
+    		
     		Quizz qz = new Quizz();
         	
     		qz =  quizzRepository.findById(Long.parseLong(idQuizz)).orElse(null);
@@ -88,6 +104,7 @@ public class WebSocketControllerSolo {
     			String jsonString = gson.toJson(objet);
     			
     			this.template.convertAndSend("/solo/" + idUser, "load-disable");
+    			this.template.convertAndSend("/solo/" + idUser, "code-partie "+num);
     			this.template.convertAndSend("/solo/" + idUser, jsonString);
     		}
     	}else {
@@ -105,7 +122,12 @@ public class WebSocketControllerSolo {
 		Long idUser = Long.parseLong(jsonObj.get("user").toString());
 
 		User userCourant = userRepository.findById(idUser).get();
-		ReponseEleve repEle = new ReponseEleve(repEleve, userCourant, questCourrante, false);
+		Long idPartie = mapParties.get(idUser);
+		System.out.println("SOLO ID PARTIE = "+idPartie);
+		
+		
+		
+		ReponseEleve repEle = new ReponseEleve(repEleve, userCourant, questCourrante, false, idPartie);
 		repEleveRepository.save(repEle);
 		System.out.println("Current ignore = " + questCourrante.getQuestion());
 		for (Iterator<Question> it = mapQuizzs.get(Long.parseLong(idUserParam)).iterator(); it.hasNext();) {
@@ -137,6 +159,7 @@ public class WebSocketControllerSolo {
 		} else {
 			System.err.println("************FIN DU QUIZZ**********");
 			mapQuizzs.remove(Long.parseLong(idUserParam));
+			mapParties.remove(Long.parseLong(idUserParam));
 			this.template.convertAndSend("/solo/" + idUserParam, "fin-quizz");
 		}
 
@@ -149,12 +172,15 @@ public class WebSocketControllerSolo {
 		JSONObject jsonObj = new JSONObject(message);
 		String repEleve = (String) jsonObj.get("reponse_eleve");
 		Long idUser = Long.parseLong(idUserParam);
-
+		Long idPartie = mapParties.get(idUser);
+		
+		System.out.println("SOLO ID PARTIE = "+idPartie);
+		
 		if (repCorrect != null) {
 			if (repEleve.equals(repCorrect)) {
 
 				User userCourant = userRepository.findById(idUser).get();
-				ReponseEleve repEle = new ReponseEleve(repEleve, userCourant, questCourrante, true);
+				ReponseEleve repEle = new ReponseEleve(repEleve, userCourant, questCourrante, true,idPartie);
 				repEleveRepository.save(repEle);
 				for (Iterator<Question> it = mapQuizzs.get(Long.parseLong(idUserParam)).iterator(); it.hasNext();) {
 					if (it.next().getId_question() == questCourrante.getId_question()) {
@@ -185,6 +211,7 @@ public class WebSocketControllerSolo {
 				} else {
 					System.err.println("************FIN DU QUIZZ**********");
 					mapQuizzs.remove(Long.parseLong(idUserParam));
+					mapParties.remove(Long.parseLong(idUserParam));
 					this.template.convertAndSend("/solo/" + idUserParam, "fin-quizz");
 				}
 			} else {

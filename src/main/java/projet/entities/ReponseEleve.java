@@ -25,6 +25,9 @@ public class ReponseEleve implements Serializable{
 	@Column
 	private boolean isCorrect;
 	
+	@Column
+	private Long idPartie;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user", nullable = false)
 	private User user;
@@ -39,16 +42,27 @@ public class ReponseEleve implements Serializable{
 		this.reponse_eleve = reponse_eleve;
 	}
 	
-	public ReponseEleve(String reponse_eleve, User user, Question question, boolean correct) {
+	public ReponseEleve(String reponse_eleve, User user, Question question, boolean correct, Long idPartie) {
 		super();
 		this.reponse_eleve = reponse_eleve;
 		this.user = user;
 		this.question = question;
 		this.isCorrect = correct;
+		this.idPartie = idPartie;
 	}
 
 	public ReponseEleve() {
 		super();
+	}
+	
+	
+	
+	public Long getIdPartie() {
+		return idPartie;
+	}
+
+	public void setIdPartie(Long idPartie) {
+		this.idPartie = idPartie;
 	}
 
 	public Long getId_reponse_eleve() {
