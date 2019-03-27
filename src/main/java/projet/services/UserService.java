@@ -26,6 +26,7 @@ import com.google.gson.JsonArray;
 import projet.dao.RoleRepository;
 import projet.dao.UserRepository;
 import projet.entities.Indice;
+import projet.entities.Question;
 import projet.entities.Quizz;
 import projet.entities.Reponse;
 import projet.entities.ReponseEleve;
@@ -41,7 +42,7 @@ import projet.exceptions.ResourceNotFoundException;
 @Service
 @Transactional
 public class UserService {
-
+int i=0;
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
@@ -50,6 +51,10 @@ public class UserService {
 	
 	@Autowired
 	private RoleRepository roleRepository;
+	
+	@Autowired
+    private QuestionService questionService;
+	
 	
 	@RequestMapping(value="/users",method=RequestMethod.GET)
     public List<User> getAllUsers() {
@@ -157,6 +162,11 @@ public class UserService {
 		
 		Set<ReponseEleve> reponses = userRepository.findById(id).get().getReponses();
 		
+		if (reponses.size() == 0) {
+			return null;
+		}
+		
+		
 		Map<Long, List<ReponseEleve>> stream = reponses.stream().collect(
                 Collectors.groupingBy(ReponseEleve::getIdPartie));
 		
@@ -181,7 +191,8 @@ public class UserService {
 	
 	@RequestMapping(value="/users/{id}/mesreponses/{idPartie}",method=RequestMethod.GET)
     public List<String> getQuizzByPartie(@PathVariable Long id,@PathVariable Long idPartie) {
-		List<Quizz> listQuizzs = new ArrayList<Quizz>();
+				
+		List<Question> listTmp = new ArrayList<Question>();
 		List<String> jsonStrings = new ArrayList<String>();
 		
 		Set<ReponseEleve> reponses = userRepository.findById(id).get().getReponses();
@@ -189,6 +200,14 @@ public class UserService {
 		List<ReponseEleve> stream = reponses.stream().filter(x -> x.getIdPartie().equals(idPartie))
 				.collect( Collectors.toList() );
 		
+		for (ReponseEleve reponseEleve : stream)
+			listTmp.add(reponseEleve.getQuestion());
+		
+		
+		Set<Question> listQuestion = stream.get(0).getQuestion().getQuizz().getQuestions();
+				
+		listQuestion.removeAll(listTmp);
+				
 		for (ReponseEleve element : stream) {
 			JSONObject objet = new JSONObject();
 			Gson gson = new GsonBuilder().create();
@@ -196,12 +215,18 @@ public class UserService {
 			objet.put("question",element.getQuestion().getQuestion() );
 			objet.put("reponse", element.getReponse_eleve() );
 			objet.put("isCorrect", element.isCorrect() );
-			
-			if (element.isCorrect())
-				objet.put("points", element.getQuestion().getPoints() );
-			else
-				objet.put("points", 0 );
-				
+			objet.put("points", element.getQuestion().getPoints() );
+			jsonStrings.add(gson.toJson(objet));
+		}
+		
+		for (Question element : listQuestion) {
+			JSONObject objet = new JSONObject();
+			Gson gson = new GsonBuilder().create();
+			String repCorrect = questionService.getCorrectReponse(element.getId_question());
+			objet.put("question",element.getQuestion() );
+			objet.put("reponse", repCorrect );
+			objet.put("isCorrect", false );
+			objet.put("points", element.getPoints() );
 			jsonStrings.add(gson.toJson(objet));
 		}
         System.out.println(jsonStrings);

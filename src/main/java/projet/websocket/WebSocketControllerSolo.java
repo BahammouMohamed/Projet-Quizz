@@ -109,6 +109,7 @@ public class WebSocketControllerSolo {
     		}
     	}else {
     		this.template.convertAndSend("/solo/" + idUser, "erreur");
+    		mapQuizzs.remove(Long.parseLong(idUser));
     	}
     }
     

@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +27,8 @@ public class QuizzService {
 	
 	@Autowired
 	private QuizzRepository quizzRepository;
+	
+	
 	
 	@RequestMapping(value="/quizzs",method=RequestMethod.GET)
     public List<Quizz> getAllQuizzs() {
