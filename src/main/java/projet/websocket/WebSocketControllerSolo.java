@@ -1,5 +1,10 @@
 package projet.websocket;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -47,6 +52,9 @@ public class WebSocketControllerSolo {
     @Autowired
     private ReponseEleveRepository repEleveRepository;
     
+    
+    
+    
     private Map<Long, LinkedList<Question>> mapQuizzs = new HashMap<>();
     private Map<Long, Long> mapParties = new HashMap<>();
         
@@ -55,11 +63,18 @@ public class WebSocketControllerSolo {
         this.template = template;
     }
     
+    public static String encodeImage(byte[] imageByteArray) {
+		return Base64.getEncoder().encodeToString(imageByteArray);
+	}
+    
     
         
     @MessageMapping("/solo/load/quizz/{idQuizz}/{idUser}")
     public void onLoadQuizz(String message , @DestinationVariable String idQuizz, @DestinationVariable String idUser){
-    	
+    	boolean hasMedia = false;
+    	File file = null;
+    	FileInputStream imageInFile;
+    	String imageDataString = "";
     	
     	if (mapQuizzs.get(Long.parseLong(idUser)) == null) {
     		
@@ -85,37 +100,71 @@ public class WebSocketControllerSolo {
     			mapQuizzs.put(Long.parseLong(idUser), llQuestions);
     			
     			Question questCourrante = mapQuizzs.get(Long.parseLong(idUser)).peek();
-
-    			String qst = questCourrante.getQuestion();
-    			JsonArray indArray = new JsonArray();
-    			JsonArray repArray = new JsonArray();
-
-    			for (Indice ind : questCourrante.getIndices())
-    				indArray.add(ind.getIndice());
-    			for (Reponse rep : questCourrante.getReponses())
-    				repArray.add(rep.getReponse());
-
-    			JSONObject objet = new JSONObject();
-    			objet.put("id_question", questCourrante.getId_question());
-    			objet.put("question", qst);
-    			objet.put("indices", indArray);
-    			objet.put("reponses", repArray);
-    			Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    			String jsonString = gson.toJson(objet);
     			
-    			this.template.convertAndSend("/solo/" + idUser, "load-disable");
-    			this.template.convertAndSend("/solo/" + idUser, "code-partie "+num);
-    			this.template.convertAndSend("/solo/" + idUser, jsonString);
+    			String qst = questCourrante.getQuestion();
+				System.out.println("Next = " + qst);
+				
+				JsonArray indArray = new JsonArray();
+				JsonArray repArray = new JsonArray();
+
+				for (Indice ind : questCourrante.getIndices())
+					indArray.add(ind.getIndice());
+				for (Reponse rep : questCourrante.getReponses())
+					repArray.add(rep.getReponse());
+				if (questCourrante.getMedias().size() != 0) {
+					hasMedia = true;
+					file = new File("upload-dir/" + questCourrante.getMedias().iterator().next().getPath_media());
+					System.out.println("SIZE = " + questCourrante.getMedias().size());
+				}
+
+				try {
+					JSONObject obj = new JSONObject();
+					if (hasMedia) {
+						imageInFile = new FileInputStream(file);
+						byte imageData[] = new byte[(int) file.length()];
+						imageInFile.read(imageData);
+						imageDataString = encodeImage(imageData);
+						obj.put("media", imageDataString);
+						imageInFile.close();
+						System.out.println("Image Successfully Manipulated!");
+					}else
+						obj.put("media", "no-media");
+
+					obj.put("id_question", questCourrante.getId_question());
+					obj.put("question", qst);
+					obj.put("indices", indArray);
+					obj.put("reponses", repArray);
+
+					Gson gson = new GsonBuilder().setPrettyPrinting().create();
+					String jsonString = gson.toJson(obj);
+
+					System.out.println(jsonString);
+
+					this.template.convertAndSend("/solo/" + idUser, "load-disable");
+	    			this.template.convertAndSend("/solo/" + idUser, "code-partie "+num);
+	    			this.template.convertAndSend("/solo/" + idUser, jsonString);
+
+				} catch (FileNotFoundException e) {
+					System.out.println("Image not found" + e);
+				} catch (IOException ioe) {
+					System.out.println("Exception while reading the Image " + ioe);
+				}
     		}
     	}else {
     		this.template.convertAndSend("/solo/" + idUser, "erreur");
     		mapQuizzs.remove(Long.parseLong(idUser));
+    		mapParties.remove(Long.parseLong(idUser));
     	}
     }
     
     @MessageMapping("/solo/ignore/{idUserParam}")
     public void onIgnore(String message, @DestinationVariable String idUserParam){
-		Question questCourrante = mapQuizzs.get(Long.parseLong(idUserParam)).peek();
+    	boolean hasMedia = false;
+    	File file = null;
+    	FileInputStream imageInFile;
+    	String imageDataString = "";
+    	
+    	Question questCourrante = mapQuizzs.get(Long.parseLong(idUserParam)).peek();
 		String repCorrect = questionService.getCorrectReponse(questCourrante.getId_question());
 		
 		JSONObject jsonObj = new JSONObject(message);
@@ -140,6 +189,8 @@ public class WebSocketControllerSolo {
 		if (mapQuizzs.get(Long.parseLong(idUserParam)).size() > 0) {
 			questCourrante = mapQuizzs.get(Long.parseLong(idUserParam)).peek();
 			String qst = questCourrante.getQuestion();
+			System.out.println("Next = " + qst);
+			
 			JsonArray indArray = new JsonArray();
 			JsonArray repArray = new JsonArray();
 
@@ -147,16 +198,44 @@ public class WebSocketControllerSolo {
 				indArray.add(ind.getIndice());
 			for (Reponse rep : questCourrante.getReponses())
 				repArray.add(rep.getReponse());
+			if (questCourrante.getMedias().size() != 0) {
+				hasMedia = true;
+				file = new File("upload-dir/" + questCourrante.getMedias().iterator().next().getPath_media());
+				System.out.println("SIZE = " + questCourrante.getMedias().size());
+			}
 
-			JSONObject objet = new JSONObject();
-			objet.put("id_question", questCourrante.getId_question());
-			objet.put("question", qst);
-			objet.put("indices", indArray);
-			objet.put("reponses", repArray);
-			Gson gson = new GsonBuilder().setPrettyPrinting().create();
-			String jsonString = gson.toJson(objet);
+			try {
+				JSONObject obj = new JSONObject();
+				if (hasMedia) {
+					imageInFile = new FileInputStream(file);
+					byte imageData[] = new byte[(int) file.length()];
+					imageInFile.read(imageData);
+					imageDataString = encodeImage(imageData);
+					obj.put("media", imageDataString);
+					imageInFile.close();
+					System.out.println("Image Successfully Manipulated!");
+				}else
+					obj.put("media", "no-media");
 
-			this.template.convertAndSend("/solo/" + idUserParam, jsonString);
+				obj.put("id_question", questCourrante.getId_question());
+				obj.put("question", qst);
+				obj.put("indices", indArray);
+				obj.put("reponses", repArray);
+
+				Gson gson = new GsonBuilder().setPrettyPrinting().create();
+				String jsonString = gson.toJson(obj);
+
+				System.out.println(jsonString);
+
+				this.template.convertAndSend("/solo/" + idUserParam, jsonString);
+
+			} catch (FileNotFoundException e) {
+				System.out.println("Image not found" + e);
+			} catch (IOException ioe) {
+				System.out.println("Exception while reading the Image " + ioe);
+			}
+
+			
 		} else {
 			System.err.println("************FIN DU QUIZZ**********");
 			mapQuizzs.remove(Long.parseLong(idUserParam));
@@ -168,7 +247,13 @@ public class WebSocketControllerSolo {
     
     @MessageMapping("/solo/{idUserParam}")
     public void onReponse(String message, @DestinationVariable String idUserParam){
-		Question questCourrante = mapQuizzs.get(Long.parseLong(idUserParam)).peek();
+    	boolean hasMedia = false;
+    	File file = null;
+    	FileInputStream imageInFile;
+    	String imageDataString = "";
+    	
+    	
+    	Question questCourrante = mapQuizzs.get(Long.parseLong(idUserParam)).peek();
 		String repCorrect = questionService.getCorrectReponse(questCourrante.getId_question());
 		JSONObject jsonObj = new JSONObject(message);
 		String repEleve = (String) jsonObj.get("reponse_eleve");
@@ -177,6 +262,7 @@ public class WebSocketControllerSolo {
 		
 		System.out.println("SOLO ID PARTIE = "+idPartie);
 		
+		System.out.println("REP ELEVE = '"+repEleve+"' REP CORRECT = '"+repCorrect+"'");
 		if (repCorrect != null) {
 			if (repEleve.equals(repCorrect)) {
 
@@ -192,6 +278,8 @@ public class WebSocketControllerSolo {
 				if (mapQuizzs.get(Long.parseLong(idUserParam)).size() > 0) {
 					questCourrante = mapQuizzs.get(Long.parseLong(idUserParam)).peek();
 					String qst = questCourrante.getQuestion();
+					System.out.println("Next = " + qst);
+					
 					JsonArray indArray = new JsonArray();
 					JsonArray repArray = new JsonArray();
 
@@ -199,16 +287,44 @@ public class WebSocketControllerSolo {
 						indArray.add(ind.getIndice());
 					for (Reponse rep : questCourrante.getReponses())
 						repArray.add(rep.getReponse());
+					if (questCourrante.getMedias().size() != 0) {
+						hasMedia = true;
+						file = new File("upload-dir/" + questCourrante.getMedias().iterator().next().getPath_media());
+						System.out.println("SIZE = " + questCourrante.getMedias().size());
+					}
 
-					JSONObject objet = new JSONObject();
-					objet.put("id_question", questCourrante.getId_question());
-					objet.put("question", qst);
-					objet.put("indices", indArray);
-					objet.put("reponses", repArray);
-					Gson gson = new GsonBuilder().setPrettyPrinting().create();
-					String jsonString = gson.toJson(objet);
+					try {
+						JSONObject obj = new JSONObject();
+						if (hasMedia) {
+							imageInFile = new FileInputStream(file);
+							byte imageData[] = new byte[(int) file.length()];
+							imageInFile.read(imageData);
+							imageDataString = encodeImage(imageData);
+							obj.put("media", imageDataString);
+							imageInFile.close();
+							System.out.println("Image Successfully Manipulated!");
+						}else
+							obj.put("media", "no-media");
 
-					this.template.convertAndSend("/solo/" + idUserParam, jsonString);
+						obj.put("id_question", questCourrante.getId_question());
+						obj.put("question", qst);
+						obj.put("indices", indArray);
+						obj.put("reponses", repArray);
+
+						Gson gson = new GsonBuilder().setPrettyPrinting().create();
+						String jsonString = gson.toJson(obj);
+
+						System.out.println(jsonString);
+
+						this.template.convertAndSend("/solo/" + idUserParam, jsonString);
+
+					} catch (FileNotFoundException e) {
+						System.out.println("Image not found" + e);
+					} catch (IOException ioe) {
+						System.out.println("Exception while reading the Image " + ioe);
+					}
+
+					
 				} else {
 					System.err.println("************FIN DU QUIZZ**********");
 					mapQuizzs.remove(Long.parseLong(idUserParam));

@@ -59,8 +59,16 @@ public class ProjetApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		
-		User user = userService.findUserByPseudo("reda");
-		System.err.println(user.getPseudo());
+		
+		/*User user1 = new User("flauzac","olivier","olivier@gmail.com","olivier","olivier","enseignant",false,null);
+		userService.createUser(user1);
+		userService.addRoleToUser("olivier", "ADMIN");
+		userService.addRoleToUser("angello", "ENSEIGNANT");
+		userService.addRoleToUser("hacene", "ENSEIGNANT");
+		userService.addRoleToUser("zouhair", "ELEVE");
+		userService.addRoleToUser("rida", "ELEVE");
+		userService.addRoleToUser("mohamed", "ELEVE");
+		*/
 	}
 
 
